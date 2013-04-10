@@ -1308,41 +1308,72 @@ namespace Chesterfield
 			return GetView(viewId, viewName, options, new Result<JObject>()).Wait();
 		}
 		#endregion
+
+        private static ViewResult<TKey, TValue> GetViewResult<TKey, TValue>(DreamMessage aDreamMessage)
+        {
+            ViewResult<TKey, TValue> val;
+            switch (aDreamMessage.Status)
+            {
+                case DreamStatus.Ok:
+                    ObjectSerializer<ViewResult<TKey, TValue>> objectSerializer = new ObjectSerializer<ViewResult<TKey, TValue>>();
+                    val = objectSerializer.Deserialize(aDreamMessage.ToText());
+                    val.Status = DreamStatus.Ok;
+                    val.ETag = aDreamMessage.Headers.ETag;
+                    break;
+                default:
+                    val = new ViewResult<TKey, TValue> { Status = aDreamMessage.Status };
+                    break;
+            }
+            return val;
+        }
+        private static ViewResult<TKey, TValue, TDocument> GetViewResult<TKey, TValue, TDocument>(DreamMessage aDreamMessage) where TDocument : ICouchDocument
+        {
+            ViewResult<TKey, TValue, TDocument> val;
+            switch (aDreamMessage.Status)
+            {
+                case DreamStatus.Ok:
+                    ObjectSerializer<ViewResult<TKey, TValue, TDocument>> objectSerializer = new ObjectSerializer<ViewResult<TKey, TValue, TDocument>>();
+                    val = objectSerializer.Deserialize(aDreamMessage.ToText());
+                    val.Status = DreamStatus.Ok;
+                    val.ETag = aDreamMessage.Headers.ETag;
+                    break;
+                default:
+                    val = new ViewResult<TKey, TValue, TDocument> { Status = aDreamMessage.Status };
+                    break;
+            }
+            return val;
+        }
 		#endregion
 
-		private static ViewResult<TKey, TValue> GetViewResult<TKey, TValue>(DreamMessage aDreamMessage)
-		{
-			ViewResult<TKey, TValue> val;
-			switch (aDreamMessage.Status)
-			{
-				case DreamStatus.Ok:
-					ObjectSerializer<ViewResult<TKey, TValue>> objectSerializer = new ObjectSerializer<ViewResult<TKey, TValue>>();
-					val = objectSerializer.Deserialize(aDreamMessage.ToText());
-					val.Status = DreamStatus.Ok;
-					val.ETag = aDreamMessage.Headers.ETag;
-					break;
-				default:
-					val = new ViewResult<TKey, TValue> { Status = aDreamMessage.Status };
-					break;
-			}
-			return val;
-		}
-		private static ViewResult<TKey, TValue, TDocument> GetViewResult<TKey, TValue, TDocument>(DreamMessage aDreamMessage) where TDocument : ICouchDocument
-		{
-			ViewResult<TKey, TValue, TDocument> val;
-			switch (aDreamMessage.Status)
-			{
-				case DreamStatus.Ok:
-					ObjectSerializer<ViewResult<TKey, TValue, TDocument>> objectSerializer = new ObjectSerializer<ViewResult<TKey, TValue, TDocument>>();
-					val = objectSerializer.Deserialize(aDreamMessage.ToText());
-					val.Status = DreamStatus.Ok;
-					val.ETag = aDreamMessage.Headers.ETag;
-					break;
-				default:
-					val = new ViewResult<TKey, TValue, TDocument> { Status = aDreamMessage.Status };
-					break;
-			}
-			return val;
-		}
-	}
+        #region Update Handlers
+        #region Asynchronous methods
+
+        public Result<JObject> UpdateHandle(string designId, string functionName, Result<JObject> result)
+        {
+            if (String.IsNullOrEmpty(designId))
+                throw new ArgumentNullException("designId");
+            if (String.IsNullOrEmpty(functionName))
+                throw new ArgumentNullException("functionName");
+            if (result == null)
+                throw new ArgumentNullException("result");
+
+            BasePlug.At(Constants.DESIGN, XUri.EncodeFragment(designId), Constants.UPDATE, XUri.EncodeFragment(functionName)).Post(new Result<DreamMessage>()).WhenDone(
+                a => result.Return(JObject.Parse(a.ToText())),
+                result.Throw
+            );
+            return result;
+        }
+
+        #endregion
+
+        #region Synchronous methods
+
+        public JObject UpdateHandle(string designId, string functionName)
+        {
+            return GetView(designId, functionName, new Result<JObject>()).Wait();
+        }
+
+        #endregion
+        #endregion
+    }
 }
