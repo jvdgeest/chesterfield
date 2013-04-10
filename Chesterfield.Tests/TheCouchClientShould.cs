@@ -75,8 +75,8 @@ namespace Chesterfield.IntegrationTest
     public void ReturnDatabaseInformation()
     {
       // Arrange
-      CouchDatabase database = client.GetDatabase(baseDatabase);
-      CouchDatabaseInfo couchDatabaseInfo = database.GetInfo();
+      CouchDatabase db = client.GetDatabase(baseDatabase);
+      CouchDatabaseInfo couchDatabaseInfo = db.GetInfo();
 
       // Assert
       Assert.AreEqual(baseDatabase, couchDatabaseInfo.Name);
@@ -87,6 +87,89 @@ namespace Chesterfield.IntegrationTest
       Assert.AreEqual(0, couchDatabaseInfo.DocDeletedCount);
       Assert.AreNotEqual(0, couchDatabaseInfo.InstanceStartTimeMs);
       Assert.AreNotEqual(DateTime.MinValue, couchDatabaseInfo.InstanceStartTime);
+    }
+
+    [TestMethod]
+    public void CreateDocumentFromStringWithCustomId()
+    {
+      // Arrange
+      CouchDatabase db = client.GetDatabase(baseDatabase);
+      string obj = @"{""test"": ""prop""}";
+      string id = Guid.NewGuid().ToString("N");
+
+      // Act
+      var result = db.CreateDocument(id, obj, new Result<string>()).Wait();
+
+      // Assert
+      Assert.IsNotNull(db.GetDocument<CouchDocument>(id));
+    }
+
+    [TestMethod]
+    public void CreateDocumentFromStringWithGeneratedId()
+    {
+      // Arrange
+      CouchDatabase db = client.GetDatabase(baseDatabase);
+      JDocument obj = new JDocument(@"{""test"": ""prop""}");
+
+      // Act
+      var result = db.CreateDocument(obj);
+
+      // Assert
+      Assert.IsNotNull(result.Id);
+      Assert.AreEqual("prop", result.Value<string>("test"));
+    }
+
+    [TestMethod]
+    public void SaveExistingDocument()
+    {
+      // Arrange
+      CouchDatabase db = client.GetDatabase(baseDatabase);
+      JDocument obj = new JDocument(@"{""test"": ""prop""}");
+      obj.Id = Guid.NewGuid().ToString("N");
+
+      // Act
+      var result = db.CreateDocument(obj);
+      var doc = db.GetDocument<JDocument>(obj.Id);
+      doc["test"] = "newprop";
+      var newresult = db.UpdateDocument(doc);
+      
+      // Assert
+      Assert.AreEqual(newresult.Value<string>("test"), "newprop");
+    }
+
+    [TestMethod]
+    public void DeleteDocument()
+    {
+      // Arrange
+      CouchDatabase db = client.GetDatabase(baseDatabase);
+      string id = Guid.NewGuid().ToString("N");
+      db.CreateDocument(id, "{}", new Result<string>()).Wait();
+      var doc = db.GetDocument<CouchDocument>(id);
+      
+      // Act
+      db.DeleteDocument(doc);
+
+      // Assert
+      Assert.IsNull(db.GetDocument<CouchDocument>(id));
+    }
+
+    [TestMethod]
+    public void DetermineIfDocumentHasAttachment()
+    {
+      // Arrange
+      CouchDatabase db = client.GetDatabase(baseDatabase);
+      string id = Guid.NewGuid().ToString("N");
+      db.CreateDocument(id, "{}", new Result<string>()).Wait();
+
+      // Act
+      using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes("This is a text document")))
+      {
+        db.AddAttachment(id, ms, "test.txt");
+      }
+      var doc = db.GetDocument<CouchDocument>(id);
+
+      // Assert
+      Assert.IsTrue(doc.HasAttachment);
     }
   }
 }
