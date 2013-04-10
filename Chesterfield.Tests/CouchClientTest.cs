@@ -1,26 +1,18 @@
-﻿using System;
+﻿/*using System;
 using System.IO;
 using System.Linq;
-using MindTouch.Tasking;
-using System.Text;
-using MindTouch.Dream;
 using System.Collections.Generic;
+using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MindTouch.Tasking;
+using MindTouch.Dream;
+using Newtonsoft.Json.Linq;
 using Chesterfield.Interfaces;
 using Chesterfield.Support;
-using Newtonsoft.Json.Linq;
-#if NUNIT
-using NUnit.Framework;
-#else
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TestAttribute = Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute;
-using TestFixtureAttribute = Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute;
-using TestFixtureSetUpAttribute = Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute;
-using TestFixtureTearDownAttribute = Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute;
-#endif
 
 namespace Chesterfield.IntegrationTest
 {
-	[TestFixture]
+	[TestClass]
 	public class CouchClientTest
 	{
 		public class TestSubClass : CouchDocument
@@ -33,12 +25,8 @@ namespace Chesterfield.IntegrationTest
 		private const string replicateDatabase = "dream-seat-test-repli";
 		private const string couchdbHostName = "192.168.56.1";
 
-		[TestFixtureSetUp]
-#if NUNIT
+		[TestInitialize]
 		public static void Setup()
-#else
-		public static void Setup(TestContext o)
-#endif
 		{
 			client = new CouchClient(aHost: couchdbHostName);
 
@@ -60,10 +48,10 @@ namespace Chesterfield.IntegrationTest
 			db.CreateDocument(view);
 
 		}
-		[TestFixtureTearDown]
+		
+        [TestCleanup]
 		public static void TearDown()
 		{
-			//delete the test database
 			if (client.HasDatabase(baseDatabase))
 			{
 				client.DeleteDatabase(baseDatabase);
@@ -78,7 +66,7 @@ namespace Chesterfield.IntegrationTest
 			}
 		}
 
-		[Test]
+		[TestMethod]
 		public void Should_Trigger_Replication()
 		{
 			string dbname = "test-replicate-db-created";
@@ -86,7 +74,7 @@ namespace Chesterfield.IntegrationTest
 			var obj = client.TriggerReplication(new ReplicationOptions(baseDatabase, String.Format("http://{0}:5984/{1}", couchdbHostName, replicateDatabase)) { Continuous = true });
 			Assert.IsTrue(obj != null);
 
-			var obj2 = client.TriggerReplication(new ReplicationOptions(baseDatabase,dbname){CreateTarget = true});
+			var obj2 = client.TriggerReplication(new ReplicationOptions(baseDatabase, dbname){CreateTarget = true});
 
 			Assert.IsTrue(obj2 != null);
 
@@ -98,7 +86,7 @@ namespace Chesterfield.IntegrationTest
 			Assert.IsNull(db);
 		}
 
-		[Test]
+        [TestMethod]
 		public void GetDatabases()
 		{
 			IEnumerable<string> database = client.GetAllDatabases();
@@ -106,7 +94,8 @@ namespace Chesterfield.IntegrationTest
 			Assert.IsTrue(database.Contains(baseDatabase));
 			Assert.IsTrue(database.Contains(replicateDatabase));
 		}
-		[Test]
+
+        [TestMethod]
 		public void GetDatabaseInfo()
 		{
 			CouchDatabase baseDb = client.GetDatabase(baseDatabase);
@@ -121,7 +110,8 @@ namespace Chesterfield.IntegrationTest
 			Assert.AreNotEqual(0, couchDatabaseInfo.InstanceStartTimeMs);
 			Assert.AreNotEqual(DateTime.MinValue, couchDatabaseInfo.InstanceStartTime);
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Trigger_Replication_using_replicator_db()
 		{
 			CouchDatabase replDb = client.GetDatabase("_replicator");
@@ -156,7 +146,8 @@ namespace Chesterfield.IntegrationTest
 
 			replDb.DeleteDocument(doc2);
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Create_Document_From_String()
 		{
 			string obj = @"{""test"": ""prop""}";
@@ -165,7 +156,8 @@ namespace Chesterfield.IntegrationTest
 			var result = db.CreateDocument(id, obj, new Result<string>()).Wait();
 			Assert.IsNotNull(db.GetDocument<CouchDocument>(id));
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Create_Document_From_String_WIthId_GeneratedByCouchDb()
 		{
 			JDocument obj = new JDocument(@"{""test"": ""prop""}");
@@ -175,7 +167,8 @@ namespace Chesterfield.IntegrationTest
 			Assert.IsNotNull(result.Id);
 			Assert.AreEqual("prop", result.Value<string>("test"));
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Save_Existing_Document()
 		{
 			JDocument obj = new JDocument( @"{""test"": ""prop""}" );
@@ -188,7 +181,8 @@ namespace Chesterfield.IntegrationTest
 			var newresult = db.UpdateDocument(doc);
 			Assert.AreEqual(newresult.Value<string>("test"), "newprop");
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Delete_Document()
 		{
 			var db = client.GetDatabase(baseDatabase);
@@ -198,7 +192,8 @@ namespace Chesterfield.IntegrationTest
 			db.DeleteDocument(doc);
 			Assert.IsNull(db.GetDocument<CouchDocument>(id));
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Determine_If_Doc_Has_Attachment()
 		{
 			var db = client.GetDatabase(baseDatabase);
@@ -212,7 +207,8 @@ namespace Chesterfield.IntegrationTest
 			var doc2 = db.GetDocument<CouchDocument>(Id);
 			Assert.IsTrue(doc2.HasAttachment);
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Return_Attachment_Names()
 		{
 			var db = client.GetDatabase(baseDatabase);
@@ -224,7 +220,8 @@ namespace Chesterfield.IntegrationTest
 			var bdoc = db.GetDocument<CouchDocument>("upload");
 			Assert.IsTrue(bdoc.GetAttachmentNames().Contains("martin.txt"));
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Create_And_Read_ConfigValue()
 		{
 			client.SetConfigValue("coucou", "key", "value");
@@ -232,7 +229,8 @@ namespace Chesterfield.IntegrationTest
 			client.DeleteConfigValue("coucou", "key");
 			Assert.IsNull(client.GetConfigValue("coucou", "key"));
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Read_ConfigSection()
 		{
 			client.SetConfigValue("coucou", "key", "value");
@@ -241,13 +239,15 @@ namespace Chesterfield.IntegrationTest
 			Assert.IsTrue(section.ContainsKey("key"));
 			Assert.AreEqual("value", section["key"]);
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Read_Configs()
 		{
 			Dictionary<string, Dictionary<string, string>> config = client.GetConfig(new Result<Dictionary<string, Dictionary<string, string>>>()).Wait();
 			Assert.IsTrue(config.Count > 0);
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Get_Attachment()
 		{
 			var db = client.GetDatabase(baseDatabase);
@@ -265,7 +265,8 @@ namespace Chesterfield.IntegrationTest
 				Assert.IsTrue(result == "This is a text document");
 			}
 		}
-		[Test]
+
+        [TestMethod]
 		public void ShouldCreateAttachmentInSubCouchDocumentClass()
 		{
 			var db = client.GetDatabase(baseDatabase);
@@ -284,7 +285,8 @@ namespace Chesterfield.IntegrationTest
 
 			Assert.IsTrue(tsc.HasAttachment);
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Delete_Attachment()
 		{
 			var db = client.GetDatabase(baseDatabase);
@@ -299,7 +301,8 @@ namespace Chesterfield.IntegrationTest
 			var retrieved = db.GetDocument<CouchDocument>("test_delete");
 			Assert.IsFalse(retrieved.HasAttachment);
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Return_Etag_In_ViewResults()
 		{
 			var db = client.GetDatabase(baseDatabase);
@@ -307,7 +310,8 @@ namespace Chesterfield.IntegrationTest
 			ViewResult<string, JObject> result = db.GetAllDocuments(new Result<ViewResult<string, JObject>>()).Wait();
 			Assert.IsTrue(!string.IsNullOrEmpty(result.ETag));
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Get_304_If_ETag_Matches()
 		{
 			var db = client.GetDatabase(baseDatabase);
@@ -316,7 +320,8 @@ namespace Chesterfield.IntegrationTest
 			ViewResult<string, JObject> cachedResult = db.GetAllDocuments(new ViewOptions { Etag = result.ETag }, new Result<ViewResult<string, JObject>>()).Wait();
 			Assert.AreEqual(DreamStatus.NotModified, cachedResult.Status);
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Get_Results_Asychronously()
 		{
 			string obj = @"{""test"": ""prop""}";
@@ -333,9 +338,9 @@ namespace Chesterfield.IntegrationTest
 
 			res2.Wait();
 			res1.Wait();
-
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Get_Database_Info()
 		{
 			var db = client.GetDatabase(baseDatabase);
@@ -344,7 +349,8 @@ namespace Chesterfield.IntegrationTest
 			Assert.IsNotNull(info);
 			Assert.AreEqual(baseDatabase, info.Name);
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Return_View_Results()
 		{
 			CouchDatabase db = client.GetDatabase(baseDatabase);
@@ -356,7 +362,8 @@ namespace Chesterfield.IntegrationTest
 			Assert.IsNotNull(result);
 			Assert.IsTrue(result.TotalRows > 0);
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Return_View_Results_With_Documents()
 		{
 			CouchDatabase db = client.GetDatabase(baseDatabase);
@@ -374,7 +381,8 @@ namespace Chesterfield.IntegrationTest
 				Assert.IsNotNull(row.Value);
 			}
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Return_View_Results_As_JObject()
 		{
 			CouchDatabase db = client.GetDatabase(baseDatabase);
@@ -386,7 +394,8 @@ namespace Chesterfield.IntegrationTest
 			Assert.IsNotNull(result);
 			Assert.IsNotNull(result["rows"]);
 		}
-		[Test]
+
+        [TestMethod]
 		public void CreateViewDocument()
 		{
 			var db = client.GetDatabase(baseDatabase);
@@ -397,13 +406,15 @@ namespace Chesterfield.IntegrationTest
 
 			Assert.IsNotNull(doc.Rev);
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Start_Compact()
 		{
 			var db = client.GetDatabase(baseDatabase);
 			db.Compact();
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Start_CompactView()
 		{
 			var db = client.GetDatabase(baseDatabase);
@@ -413,7 +424,8 @@ namespace Chesterfield.IntegrationTest
 
 			db.CompactDocumentView("test_compactview");
 		}
-		[Test]
+
+        [TestMethod]
 		public void Should_Run_TestView()
 		{
 			var db = client.GetDatabase(baseDatabase);
@@ -424,13 +436,15 @@ namespace Chesterfield.IntegrationTest
 			Assert.IsNotNull(result);
 			Assert.AreEqual(DreamStatus.Ok, result.Status);
 		}
-		[Test]
+
+        [TestMethod]
 		[Ignore]
 		public void Should_Restart_Server()
 		{
 			client.RestartServer();
 		}
-		[Test]
+
+        [TestMethod]
 		public void GetChangesWithDocument()
 		{
 			if (client.HasDatabase("test_changes"))
@@ -446,7 +460,8 @@ namespace Chesterfield.IntegrationTest
 			Assert.IsNotNull(changes.Results[0].Id);
 			Assert.IsNotNull(changes.Results[0].Sequence);
 		}
-		[Test]
+
+        [TestMethod]
 		public void GetChanges()
 		{
 			if (client.HasDatabase("test_changes"))
@@ -461,7 +476,8 @@ namespace Chesterfield.IntegrationTest
 			Assert.IsNotNull(changes.Results[0].Id);
 			Assert.IsNotNull(changes.Results[0].Sequence);
 		}
-		[Test]
+
+        [TestMethod]
 		public void GetContinuousChanges()
 		{
 			System.Threading.AutoResetEvent evt = new System.Threading.AutoResetEvent(false);
@@ -491,7 +507,8 @@ namespace Chesterfield.IntegrationTest
 				Assert.AreEqual(result.Id, id);
 			}
 		}
-		[Test]
+
+        [TestMethod]
 		public void GetContinuousChangesWithDocument()
 		{
 			System.Threading.AutoResetEvent evt = new System.Threading.AutoResetEvent(false);
@@ -522,7 +539,8 @@ namespace Chesterfield.IntegrationTest
 				Assert.AreEqual(result.Id, id);
 			}
 		}
-		[Test]
+
+        [TestMethod]
 		public void CreateShow()
 		{
 			var db = client.GetDatabase(baseDatabase);
@@ -535,7 +553,8 @@ namespace Chesterfield.IntegrationTest
 			doc.Shows.Add("simple", "function(doc, req) {return '<h1>' + doc.title + '</h1>';}");
 			db.CreateDocument(doc);
 		}
-		[Test]
+
+        [TestMethod]
 		public void CreateValidateDocUpdate()
 		{
 			const string validationFunction = "function(newDoc, oldDoc, userCtx) {}";
@@ -551,7 +570,8 @@ namespace Chesterfield.IntegrationTest
 
 			db.DeleteDocument(jd);
 		}
-		[Test]
+
+        [TestMethod]
 		public void ViewStaleOptions()
 		{
 			ViewOptions viewOptions = new ViewOptions();
@@ -565,4 +585,4 @@ namespace Chesterfield.IntegrationTest
 			Assert.AreEqual("http://localhost?stale=update_after", p2.ToString());
 		}
 	}
-}
+}*/
