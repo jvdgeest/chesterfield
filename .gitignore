@@ -30,6 +30,7 @@ _ReSharper*/
 *.orig
 *.pidb
 *.userprefs
+packages/*/*
 
 /Chestfield.IntegrationTest/test-results
 *.testsettings
