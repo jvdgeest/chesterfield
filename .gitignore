@@ -31,6 +31,6 @@ _ReSharper*/
 *.pidb
 *.userprefs
 
-/LoveSeat.IntegrationTest/test-results
+/Chestfield.IntegrationTest/test-results
 *.testsettings
-LoveSeat.vsmdi
+Chestfield.vsmdi

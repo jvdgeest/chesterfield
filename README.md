@@ -1,15 +1,19 @@
-DreamSeat
+Chesterfield
 ========
 
-DreamSeat is a [CouchDB](http://couchdb.apache.org/) client for the .NET plateform. 
-It is based on [LoveSeat](https://github.com/soitgoes/DreamSeat) from [Martin Murphy](https://github.com/soitgoes).
+Chesterfield is a [CouchDB](http://couchdb.apache.org/) client for the 
+.NET platform. It is based on [LoveSeat](https://github.com/soitgoes/LoveSeat) 
+from [Martin Murphy](https://github.com/soitgoes) and 
+[DreamSeat](https://github.com/soitgoes/DreamSeat) from 
+[Vincent Daron](https://github.com/vdaron).
 
-DreamSeat is also base on :
+Chesterfield is also based on:
 
  * [Mindtouch Dream](https://github.com/MindTouch/DReAM).
  * [Newtonsoft.Json](http://json.codeplex.com/)
 
-Thanks to Mindtouch Dream, all the API calls can be executed asychronously or sychronously.
+Thanks to Mindtouch Dream, all the API calls can be executed asychronously or 
+sychronously.
 
 Tested compatibility
 ====================
@@ -17,14 +21,15 @@ Tested compatibility
  * CouchDB 1.0 and 1.1
  * .NET Framework 4.0 or Mono 2.9 (compiled master branch from Nov 20 2010)
 
-DreamSeat Main Features
-=======================
+Main features
+=============
 
- * Complete Synchronous/Asynchronous API
- * Manage Databases, Documents, Attachments, Views, Users, Replication, Change Notifications, ...
+ * Complete synchronous/asynchronous API
+ * Manage databases, documents, attachments, views, users, replication, 
+   change notifications, ...
 
-DreamSeat usage
-==============
+Chesterfield usage
+==================
 
 ## Basics
 
@@ -52,6 +57,3 @@ DreamSeat usage
         e => ProcessException(e)
         );
     }
-
-For more informations and examples of DreamSeat, have a look at the [sample app](https://github.com/vdaron/DreamSeat/tree/master/Samples/ContactManager) code.
-
