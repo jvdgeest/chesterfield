@@ -4,35 +4,35 @@ using Chesterfield.Support;
 
 namespace Chesterfield.Tests
 {
-	[TestClass]
-    public class TheCouchDbConnectionStringBuilderShould
-	{
-		[TestMethod]
-		public void ParseAConnectionString()
-		{
-            // Arrange
-			CouchDbConnectionStringBuilder builder = new CouchDbConnectionStringBuilder("Host=test;port=10;username=un;Password=coucou;SslEnabled=true");
+  [TestClass]
+  public class TheCouchDbConnectionStringBuilderShould
+  {
+    [TestMethod]
+    public void ParseAConnectionString()
+    {
+      // Arrange
+      CouchDbConnectionStringBuilder builder = new CouchDbConnectionStringBuilder("Host=test;port=10;username=un;Password=coucou;SslEnabled=true");
 
-            // Assert
-            Assert.AreEqual("test", builder.Host);
-            Assert.AreEqual("un", builder.UserName);
-            Assert.AreEqual(10, builder.Port);
-            Assert.AreEqual("coucou", builder.Password);
-            Assert.AreEqual(true, builder.SslEnabled);
-		}
+      // Assert
+      Assert.AreEqual("test", builder.Host);
+      Assert.AreEqual("un", builder.UserName);
+      Assert.AreEqual(10, builder.Port);
+      Assert.AreEqual("coucou", builder.Password);
+      Assert.AreEqual(true, builder.SslEnabled);
+    }
 
-		[TestMethod]
-		public void UseCorrectDefaultValues()
-		{
-            // Arrange
-            CouchDbConnectionStringBuilder builder = new CouchDbConnectionStringBuilder(String.Empty);
+    [TestMethod]
+    public void UseCorrectDefaultValues()
+    {
+      // Arrange
+      CouchDbConnectionStringBuilder builder = new CouchDbConnectionStringBuilder(String.Empty);
 
-            // Assert
-            Assert.AreEqual("localhost", builder.Host);
-            Assert.AreEqual(String.Empty, builder.UserName);
-            Assert.AreEqual(5984, builder.Port);
-            Assert.AreEqual(String.Empty, builder.Password);
-            Assert.AreEqual(false, builder.SslEnabled);
-		}
-	}
+      // Assert
+      Assert.AreEqual("localhost", builder.Host);
+      Assert.AreEqual(String.Empty, builder.UserName);
+      Assert.AreEqual(5984, builder.Port);
+      Assert.AreEqual(String.Empty, builder.Password);
+      Assert.AreEqual(false, builder.SslEnabled);
+    }
+  }
 }
