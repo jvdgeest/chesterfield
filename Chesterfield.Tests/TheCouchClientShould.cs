@@ -171,5 +171,47 @@ namespace Chesterfield.IntegrationTest
       // Assert
       Assert.IsTrue(doc.HasAttachment);
     }
+
+    [TestMethod]
+    public void DetermineIfDocumentHasNoAttachment()
+    {
+      // Arrange
+      CouchDatabase db = client.GetDatabase(baseDatabase);
+      string id = Guid.NewGuid().ToString("N");
+      db.CreateDocument(id, "{}", new Result<string>()).Wait();
+      var doc = db.GetDocument<CouchDocument>(id);
+
+      // Assert
+      Assert.IsFalse(doc.HasAttachment);
+    }
+
+    [TestMethod]
+    public void ReturnAttachmentNames()
+    {
+      // Arrange
+      CouchDatabase db = client.GetDatabase(baseDatabase);
+      string id = Guid.NewGuid().ToString("N");
+      db.CreateDocument(id, "{}", new Result<string>()).Wait();
+
+      // Act
+      using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes("This is a text document")))
+      {
+        db.AddAttachment(id, ms, "test.txt");
+      }
+      var doc = db.GetDocument<CouchDocument>(id);
+
+      // Assert
+      Assert.IsTrue(doc.GetAttachmentNames().Contains("test.txt"));
+    }
+
+    [TestMethod]
+    public void ReturnConfigValue()
+    {
+      // Arrange
+      client.SetConfigValue("section", "key", "value");
+
+      // Assert
+      Assert.AreEqual("value", client.GetConfigValue("section", "key"));
+    }
   }
 }
