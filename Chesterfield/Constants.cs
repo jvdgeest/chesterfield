@@ -46,6 +46,7 @@
 		public const string VIEWS = "views";
 		public const string SHOWS = "shows";
 		public const string LISTS = "lists";
+        public const string UPDATES = "updates";
 		public const string VALIDATE_DOC_UPDATE = "validate_doc_update";
 
 		public const string SOURCE = "source";
