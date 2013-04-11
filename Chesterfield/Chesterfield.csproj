@@ -78,6 +78,9 @@
     <Compile Include="CouchAttachment.cs" />
     <Compile Include="CouchChanges.cs" />
     <Compile Include="CouchContinuousChanges.cs" />
+    <Compile Include="CouchDatabase.Views.cs">
+	  <DependentUpon>CouchDatabase.cs</DependentUpon>
+	</Compile>
     <Compile Include="CouchDatabaseInfo.cs" />
     <Compile Include="CouchException.cs" />
     <Compile Include="CouchDesignDocument.cs" />
