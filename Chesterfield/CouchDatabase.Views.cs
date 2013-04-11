@@ -57,7 +57,7 @@ namespace Chesterfield
       if (result == null)
         throw new ArgumentNullException("result");
 
-      // Ensure Documents are requested
+      // Ensure documents are requested.
       options.IncludeDocs = true;
 
       GetView(viewId, viewName, options, new Result<DreamMessage>()).WhenDone(
@@ -82,22 +82,22 @@ namespace Chesterfield
       if (result == null)
         throw new ArgumentNullException("result");
 
-      BasePlug.At(Constants.TEMP_VIEW).With(options).Post(DreamMessage.Ok(
-        MimeType.JSON, JsonConvert.SerializeObject(view)), 
-        new Result<DreamMessage>()).WhenDone(
-        a =>
-        {
-          if (a.Status == DreamStatus.Ok || a.Status == DreamStatus.NotModified)
+      BasePlug
+        .At(Constants.TEMP_VIEW)
+        .With(options)
+        .Post(DreamMessage.Ok(MimeType.JSON, JsonConvert.SerializeObject(view)), 
+          new Result<DreamMessage>())
+        .WhenDone(
+          a =>
           {
-            result.Return(GetViewResult<TKey, TValue>(a));
-          }
-          else
-          {
-            result.Throw(new CouchException(a));
-          }
-        },
-        result.Throw
-      );
+            if (a.Status == DreamStatus.Ok || 
+              a.Status == DreamStatus.NotModified)
+              result.Return(GetViewResult<TKey, TValue>(a));
+            else
+              result.Throw(new CouchException(a));
+          },
+          result.Throw
+        );
       return result;
     }
 
@@ -117,22 +117,22 @@ namespace Chesterfield
       if (result == null)
         throw new ArgumentNullException("result");
 
-      BasePlug.At(Constants.TEMP_VIEW).With(options).Post(DreamMessage.Ok(
-        MimeType.JSON, JsonConvert.SerializeObject(view)), 
-        new Result<DreamMessage>()).WhenDone(
-        a =>
-        {
-          if (a.Status == DreamStatus.Ok || a.Status == DreamStatus.NotModified)
+      BasePlug
+        .At(Constants.TEMP_VIEW)
+        .With(options)
+        .Post(DreamMessage.Ok(MimeType.JSON, JsonConvert.SerializeObject(view)), 
+          new Result<DreamMessage>())
+        .WhenDone(
+          a =>
           {
-            result.Return(GetViewResult<TKey, TValue, TDocument>(a));
-          }
-          else
-          {
-            result.Throw(new CouchException(a));
-          }
-        },
-        result.Throw
-      );
+            if (a.Status == DreamStatus.Ok || 
+              a.Status == DreamStatus.NotModified)
+              result.Return(GetViewResult<TKey, TValue, TDocument>(a));
+            else
+              result.Throw(new CouchException(a));
+          },
+          result.Throw
+        );
       return result;
     }
 
@@ -244,22 +244,22 @@ namespace Chesterfield
       if (result == null)
         throw new ArgumentNullException("result");
 
-      BasePlug.At(Constants.DESIGN, XUri.EncodeFragment(viewId), Constants.VIEW,
-        XUri.EncodeFragment(viewName)).With(options).Get(
-          new Result<DreamMessage>()).WhenDone(
-        a =>
-        {
-          if (a.Status == DreamStatus.Ok || a.Status == DreamStatus.NotModified)
+      BasePlug
+        .At(Constants.DESIGN, XUri.EncodeFragment(viewId), Constants.VIEW,
+          XUri.EncodeFragment(viewName))
+        .With(options)
+        .Get(new Result<DreamMessage>())
+        .WhenDone(
+          a =>
           {
-            result.Return(a);
-          }
-          else
-          {
-            result.Throw(new CouchException(a));
-          }
-        },
-        result.Throw
-      );
+            if (a.Status == DreamStatus.Ok || 
+              a.Status == DreamStatus.NotModified)
+              result.Return(a);
+            else
+              result.Throw(new CouchException(a));
+          },
+          result.Throw
+        );
       return result;
     }
 
