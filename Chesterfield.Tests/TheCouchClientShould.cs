@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTouch.Tasking;
 using MindTouch.Dream;
@@ -67,7 +68,7 @@ namespace Chesterfield.IntegrationTest
     [TestMethod]
     public void ReturnListWithDatabases()
     {
-      // Arrange
+      // Act
       IEnumerable<string> databases = client.GetAllDatabases();
 
       // Assert
@@ -495,6 +496,75 @@ namespace Chesterfield.IntegrationTest
       Assert.IsNotNull(changes.Results[0].Sequence);
     }
 
+    [TestMethod]
+    public void GetContiniousChanges()
+    {
+      // Arrange
+      CouchDatabase db = client.GetDatabase(baseDatabase);
+      AutoResetEvent evt = new AutoResetEvent(false);
+      string id = null;
+      
+      // Act
+      using (CouchContinuousChanges ccc = 
+        db.GetCoutinuousChanges(new ChangeOptions() { Since = 0 }, (x, y) =>
+        {
+          try
+          {
+            id = y.Id;
 
+            // Assert
+            Assert.IsNotNull(y.Id);
+            Assert.IsTrue(y.Sequence > 0);
+          }
+          finally
+          {
+            evt.Set();
+          }
+        }, new Result<CouchContinuousChanges>()).Wait())
+      {
+        JDocument result = db.CreateDocument(new JDocument(), 
+          new Result<JDocument>()).Wait();
+        evt.WaitOne();
+
+        // Assert
+        Assert.AreEqual(result.Id, id);
+      }
+    }
+
+    [TestMethod]
+    public void GetContiniousChangesWithDocument()
+    {
+      // Arrange
+      CouchDatabase db = client.GetDatabase(baseDatabase);
+      AutoResetEvent evt = new AutoResetEvent(false);
+      string id = null;
+
+      // Act
+      using (CouchContinuousChanges<JDocument> ccc = db.GetCoutinuousChanges<JDocument>(
+        new ChangeOptions() { Since = 0 }, (x, y) =>
+        {
+          try
+          {
+            id = y.Doc.Id;
+
+            // Assert
+            Assert.IsNotNull(y.Doc);
+            Assert.IsNotNull(y.Id);
+            Assert.IsTrue(y.Sequence > 0);
+          }
+          finally
+          {
+            evt.Set();
+          }
+        }, new Result<CouchContinuousChanges<JDocument>>()).Wait())
+      {
+        JDocument result = db.CreateDocument(new JDocument(),
+          new Result<JDocument>()).Wait();
+        evt.WaitOne();
+
+        // Assert
+        Assert.AreEqual(result.Id, id);
+      }
+    }
   }
 }
