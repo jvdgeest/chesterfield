@@ -306,8 +306,8 @@ namespace Chesterfield.IntegrationTest
       client.SetConfigValue("chesterfield", "key", "value");
 
       // Act
-      Dictionary<string, string> section = client.GetConfigSection("chesterfield", 
-        new Result<Dictionary<string, string>>()).Wait();
+      Dictionary<string, string> section = client.GetConfigSection(
+        "chesterfield", new Result<Dictionary<string, string>>()).Wait();
 
       // Assert
       Assert.AreEqual(1, section.Count);
@@ -319,8 +319,8 @@ namespace Chesterfield.IntegrationTest
     public void ReadConfigs()
     {
       // Act
-      Dictionary<string, Dictionary<string, string>> config = 
-        client.GetConfig(new Result<Dictionary<string, Dictionary<string, string>>>()).Wait();
+      Dictionary<string, Dictionary<string, string>> config = client.GetConfig(
+        new Result<Dictionary<string, Dictionary<string, string>>>()).Wait();
 
       // Assert
       Assert.IsTrue(config.Count > 0);
@@ -333,8 +333,9 @@ namespace Chesterfield.IntegrationTest
       CouchDatabase db = client.GetDatabase(baseDatabase);
 
       // Act
-      db.CreateDocument(@"{""_id"":""test_eTag""}", new Result<string>()).Wait();
-      ViewResult<string, JObject> result = db.GetAllDocuments(new Result<ViewResult<string, JObject>>()).Wait();
+      db.CreateDocument(@"{""_id"":""eTag""}", new Result<string>()).Wait();
+      ViewResult<string, JObject> result = db.GetAllDocuments(
+        new Result<ViewResult<string, JObject>>()).Wait();
 
       // Assert
       Assert.IsTrue(!string.IsNullOrEmpty(result.ETag));
@@ -347,11 +348,13 @@ namespace Chesterfield.IntegrationTest
       CouchDatabase db = client.GetDatabase(baseDatabase);
 
       // Act
-      db.CreateDocument(@"{""_id"":""test_eTag_exception""}", new Result<string>()).Wait();
+      db.CreateDocument(@"{""_id"":""test_eTag_exception""}", 
+        new Result<string>()).Wait();
       ViewResult<string, JObject> result = 
         db.GetAllDocuments(new Result<ViewResult<string, JObject>>()).Wait();
-      ViewResult<string, JObject> cachedResult = 
-        db.GetAllDocuments(new ViewOptions { Etag = result.ETag }, new Result<ViewResult<string, JObject>>()).Wait();
+      ViewResult<string, JObject> cachedResult = db.GetAllDocuments(
+        new ViewOptions { Etag = result.ETag }, 
+        new Result<ViewResult<string, JObject>>()).Wait();
 
       // Assert
       Assert.AreEqual(DreamStatus.NotModified, cachedResult.Status);
@@ -365,7 +368,8 @@ namespace Chesterfield.IntegrationTest
 
       // Act
       CouchDesignDocument view = new CouchDesignDocument("testviewitem");
-      view.Views.Add("testview", new CouchView("function(doc) {emit(doc._rev, doc)}"));
+      view.Views.Add("testview", 
+        new CouchView("function(doc) {emit(doc._rev, doc)}"));
       db.CreateDocument(view);
 
       // Assert
@@ -383,8 +387,8 @@ namespace Chesterfield.IntegrationTest
       db.CreateDocument(new JDocument());
 
       // Act
-      ViewResult<string, JObject> result = 
-        db.GetView("testviewitem", "testview", new Result<ViewResult<string, JObject>>()).Wait();
+      ViewResult<string, JObject> result = db.GetView("testviewitem", 
+        "testview", new Result<ViewResult<string, JObject>>()).Wait();
 
       // Assert
       Assert.IsNotNull(result);
@@ -427,11 +431,66 @@ namespace Chesterfield.IntegrationTest
       db.CreateDocument(new JDocument());
 
       // Act
-      JObject result = db.GetView("testviewitem", "testview", new Result<JObject>()).Wait();
+      JObject result = db.GetView("testviewitem", "testview", 
+        new Result<JObject>()).Wait();
 
       // Assert
       Assert.IsNotNull(result);
       Assert.IsNotNull(result["rows"]);
+    }
+
+    [TestMethod]
+    public void RunTestView()
+    {
+      // Arrange
+      CouchDatabase db = client.GetDatabase(baseDatabase);
+      db.CreateDocument("id1", "{}", new Result<string>()).Wait();
+
+      // Act
+      CouchDesignDocument doc = new CouchDesignDocument("test_compactview");
+      ViewResult<string, JObject> result = db.GetTempView<string, JObject>(
+        new CouchView("function(doc) { emit(null, doc) }"));
+
+      // Assert
+      Assert.IsNotNull(result);
+      Assert.AreEqual(DreamStatus.Ok, result.Status);
+    }
+
+    [TestMethod]
+    public void GetChanges()
+    {
+      // Arrange
+      CouchDatabase db = client.GetDatabase(baseDatabase);
+      db.CreateDocument(null, "{}", new Result<string>()).Wait();
+
+      // Act
+      CouchChanges changes = db.GetChanges(new ChangeOptions(), 
+        new Result<CouchChanges>()).Wait();
+
+      // Assert
+      Assert.AreEqual(1, changes.Results.Length);
+      Assert.IsNotNull(changes.Results[0].Changes);
+      Assert.IsNotNull(changes.Results[0].Id);
+      Assert.IsNotNull(changes.Results[0].Sequence);
+    }
+
+    [TestMethod]
+    public void GetChangesWithDocument()
+    {
+      // Arrange
+      CouchDatabase db = client.GetDatabase(baseDatabase);
+      db.CreateDocument(null, "{}", new Result<string>()).Wait();
+
+      // Act
+      CouchChanges<JDocument> changes = db.GetChanges(new ChangeOptions(),
+        new Result<CouchChanges<JDocument>>()).Wait();
+
+      // Assert
+      Assert.AreEqual(1, changes.Results.Length);
+      Assert.IsNotNull(changes.Results[0].Doc);
+      Assert.IsNotNull(changes.Results[0].Changes);
+      Assert.IsNotNull(changes.Results[0].Id);
+      Assert.IsNotNull(changes.Results[0].Sequence);
     }
   }
 }
