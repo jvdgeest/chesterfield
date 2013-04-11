@@ -205,13 +205,82 @@ namespace Chesterfield.IntegrationTest
     }
 
     [TestMethod]
+    public void ReturnAttachment()
+    {
+      // Arrange
+      CouchDatabase db = client.GetDatabase(baseDatabase);
+      db.CreateDocument(@"{""_id"":""test_upload""}", new Result<string>()).Wait();
+      var doc = db.GetDocument<CouchDocument>("test_upload");
+      var attachment = Encoding.UTF8.GetBytes("test");
+      using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes("This is a text document")))
+      {
+        db.AddAttachment("test_upload", ms, "test_upload.txt");
+      }
+
+      // Act
+      string result;
+      using (Stream stream = db.GetAttachment(doc, "test_upload.txt"))
+      {
+        using (StreamReader reader = new StreamReader(stream))
+        {
+          result = reader.ReadToEnd();
+        }
+      }
+
+      // Assert
+      Assert.IsTrue(result == "This is a text document");
+    }
+
+    [TestMethod]
     public void ReturnConfigValue()
     {
       // Arrange
-      client.SetConfigValue("section", "key", "value");
+      client.SetConfigValue("chesterfield", "key", "value");
 
       // Assert
-      Assert.AreEqual("value", client.GetConfigValue("section", "key"));
+      Assert.AreEqual("value", client.GetConfigValue("chesterfield", "key"));
     }
+
+    [TestMethod]
+    public void DeleteConfigValue()
+    {
+      // Arrange
+      client.SetConfigValue("chesterfield", "key", "value");
+
+      // Act
+      client.DeleteConfigValue("chesterfield", "key");
+
+      // Assert
+      Assert.IsNull(client.GetConfigValue("chesterfield", "key"));
+    }
+
+    [TestMethod]
+    public void ReadConfigSection()
+    {
+      // Arrange
+      client.SetConfigValue("chesterfield", "key", "value");
+
+      // Act
+      Dictionary<string, string> section = client.GetConfigSection("chesterfield", 
+        new Result<Dictionary<string, string>>()).Wait();
+
+      // Assert
+      Assert.AreEqual(1, section.Count);
+      Assert.IsTrue(section.ContainsKey("key"));
+      Assert.AreEqual("value", section["key"]);
+    }
+
+    [TestMethod]
+    public void ReadConfigs()
+    {
+      // Act
+      Dictionary<string, Dictionary<string, string>> config = 
+        client.GetConfig(new Result<Dictionary<string, Dictionary<string, string>>>()).Wait();
+
+      // Assert
+      Assert.IsTrue(config.Count > 0);
+    }
+
+
   }
 }
