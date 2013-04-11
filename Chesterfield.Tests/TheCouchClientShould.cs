@@ -81,6 +81,8 @@ namespace Chesterfield.IntegrationTest
     {
       // Arrange
       CouchDatabase db = client.GetDatabase(baseDatabase);
+
+      // Act
       CouchDatabaseInfo couchDatabaseInfo = db.GetInfo();
 
       // Assert
@@ -492,5 +494,7 @@ namespace Chesterfield.IntegrationTest
       Assert.IsNotNull(changes.Results[0].Id);
       Assert.IsNotNull(changes.Results[0].Sequence);
     }
+
+
   }
 }
