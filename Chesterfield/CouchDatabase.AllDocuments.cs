@@ -19,64 +19,64 @@ namespace Chesterfield
     }
 
     public Result<ViewResult<TKey, TValue>> GetAllDocuments<TKey, TValue>(
-      ViewOptions aViewOptions, Result<ViewResult<TKey, TValue>> aResult)
+      ViewOptions viewOptions, Result<ViewResult<TKey, TValue>> result)
     {
-      if (aViewOptions == null)
-        throw new ArgumentNullException("aViewOptions");
-      if (aResult == null)
-        throw new ArgumentNullException("aResult");
+      if (viewOptions == null)
+        throw new ArgumentNullException("viewOptions");
+      if (result == null)
+        throw new ArgumentNullException("result");
 
-      BasePlug.At(Constants.ALL_DOCS).With(aViewOptions).Get(
-        new Result<DreamMessage>()).WhenDone(
-        a =>
-        {
-          if (a.Status == DreamStatus.Ok || a.Status == DreamStatus.NotModified)
+      BasePlug
+        .At(Constants.ALL_DOCS)
+        .With(viewOptions)
+        .Get(new Result<DreamMessage>())
+        .WhenDone(
+          a =>
           {
-            aResult.Return(GetViewResult<TKey, TValue>(a));
-          }
-          else
-          {
-            aResult.Throw(new CouchException(a));
-          }
-        },
-        aResult.Throw
+            if (a.Status == DreamStatus.Ok || 
+              a.Status == DreamStatus.NotModified)
+              result.Return(GetViewResult<TKey, TValue>(a));
+            else
+              result.Throw(new CouchException(a));
+          },
+          result.Throw
         );
-      return aResult;
+      return result;
     }
 
     public Result<ViewResult<TKey, TValue, TDocument>> GetAllDocuments<TKey, 
-      TValue, TDocument>(Result<ViewResult<TKey, TValue, TDocument>> aResult) 
+      TValue, TDocument>(Result<ViewResult<TKey, TValue, TDocument>> result) 
       where TDocument : ICouchDocument
     {
-      return GetAllDocuments(new ViewOptions(), aResult);
+      return GetAllDocuments(new ViewOptions(), result);
     }
 
     public Result<ViewResult<TKey, TValue, TDocument>> GetAllDocuments<TKey, 
-      TValue, TDocument>(ViewOptions aViewOptions, Result<ViewResult<TKey, 
-      TValue, TDocument>> aResult) 
+      TValue, TDocument>(ViewOptions viewOptions, Result<ViewResult<TKey, 
+      TValue, TDocument>> result) 
       where TDocument : ICouchDocument
     {
-      if (aViewOptions == null)
-        throw new ArgumentNullException("aViewOptions");
-      if (aResult == null)
-        throw new ArgumentNullException("aResult");
+      if (viewOptions == null)
+        throw new ArgumentNullException("viewOptions");
+      if (result == null)
+        throw new ArgumentNullException("result");
 
-      BasePlug.At(Constants.ALL_DOCS).With(Constants.INCLUDE_DOCS, true).
-        With(aViewOptions).Get(new Result<DreamMessage>()).WhenDone(
-        a =>
-        {
-          if (a.Status == DreamStatus.Ok || a.Status == DreamStatus.NotModified)
+      BasePlug
+        .At(Constants.ALL_DOCS)
+        .With(Constants.INCLUDE_DOCS, true)
+        .With(viewOptions).Get(new Result<DreamMessage>())
+        .WhenDone(
+          a =>
           {
-            aResult.Return(GetViewResult<TKey, TValue, TDocument>(a));
-          }
-          else
-          {
-            aResult.Throw(new CouchException(a));
-          }
-        },
-        aResult.Throw
+            if (a.Status == DreamStatus.Ok || 
+              a.Status == DreamStatus.NotModified)
+              result.Return(GetViewResult<TKey, TValue, TDocument>(a));
+            else
+              result.Throw(new CouchException(a));
+          },
+          result.Throw
         );
-      return aResult;
+      return result;
     }
 
     /* =========================================================================
@@ -102,9 +102,9 @@ namespace Chesterfield
     }
 
     public ViewResult<TKey, TValue, TDocument> GetAllDocuments<TKey, TValue, 
-      TDocument>(ViewOptions aViewOptions) where TDocument : ICouchDocument
+      TDocument>(ViewOptions viewOptions) where TDocument : ICouchDocument
     {
-      return GetAllDocuments(aViewOptions, 
+      return GetAllDocuments(viewOptions, 
         new Result<ViewResult<TKey, TValue, TDocument>>()).Wait();
     }
   }
