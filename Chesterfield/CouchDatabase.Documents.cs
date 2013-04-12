@@ -409,7 +409,7 @@ namespace Chesterfield
     /// <typeparam name="TDocument">Type of object that must be created (must 
     /// inherit from ICouchDocument).</typeparam>
     /// <param name="doc">Document object that contains the data.</param>
-    /// <returns>Created object.</returns>
+    /// <returns>Created document.</returns>
     public TDocument CreateDocument<TDocument>(TDocument doc) 
       where TDocument : class, ICouchDocument
     {

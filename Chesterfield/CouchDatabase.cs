@@ -9,147 +9,181 @@ using Chesterfield.Support;
 
 namespace Chesterfield
 {
+  /* This class has the following partial classes:
+   * > CouchDatabase.cs
+   * > CouchDatabase.AllDocuments.cs 
+   * > CouchDatabase.Attachments.cs
+   * > CouchDatabase.Changes.cs
+   * > CouchDatabase.Documents.cs
+   * > CouchDatabase.Views.cs 
+   */
   public partial class CouchDatabase : CouchBase
   {
-    public CouchDatabase(XUri aDatabaseUri)
-      : base(aDatabaseUri)
+    public CouchDatabase(XUri databaseUri)
+      : base(databaseUri)
     {
     }
 
-    public CouchDatabase(XUri aDatabaseUri, string aUsername, string aPassword)
-      : base(aDatabaseUri, aUsername, aPassword)
+    public CouchDatabase(XUri databaseUri, string username, string password)
+      : base(databaseUri, username, password)
     {
     }
 
-    public CouchDatabase(Plug aDatabasePlug)
-      : base(aDatabasePlug)
+    public CouchDatabase(Plug databasePlug)
+      : base(databasePlug)
     {
+    }
+
+    /* =========================================================================
+     * Asynchronous methods 
+     * =======================================================================*/
+
+    /// <summary>
+    /// Retrieves information about the CouchDB database, such as the disk size
+    /// and document count. See CouchDatabaseInfo for more information.
+    /// <para>&#160;</para>
+    /// This method is asynchronous.
+    /// </summary>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public Result<CouchDatabaseInfo> GetInfo(Result<CouchDatabaseInfo> result)
+    {
+      if (result == null)
+        throw new ArgumentNullException("result");
+
+      BasePlug
+        .Get(DreamMessage.Ok(), new Result<DreamMessage>())
+        .WhenDone(
+          a =>
+          {
+            if (a.Status == DreamStatus.Ok)
+              result.Return(JsonConvert.DeserializeObject<CouchDatabaseInfo>(
+                a.ToText()));
+            else
+              result.Throw(new CouchException(a));
+          },
+          result.Throw
+        );
+      return result;
     }
 
     /// <summary>
-    /// Retrieve DatabaseInformation
+    /// Compacts the database.
+    /// <para>&#160;</para>
+    /// This method is asynchronous.
     /// </summary>
-    /// <param name="aResult"></param>
+    /// <param name="result"></param>
     /// <returns></returns>
-    public Result<CouchDatabaseInfo> GetInfo(Result<CouchDatabaseInfo> aResult)
+    public Result Compact(Result result)
     {
-      if (aResult == null)
-        throw new ArgumentNullException("aResult");
+      if (result == null)
+        throw new ArgumentNullException("result");
 
-      BasePlug.Get(DreamMessage.Ok(), new Result<DreamMessage>()).WhenDone(
-        a =>
-        {
-          if (a.Status == DreamStatus.Ok)
-            aResult.Return(JsonConvert.DeserializeObject<CouchDatabaseInfo>(a.ToText()));
-          else
-            aResult.Throw(new CouchException(a));
-        },
-        aResult.Throw
-      );
-      return aResult;
+      BasePlug
+        .At(Constants.COMPACT)
+        .Post(DreamMessage.Ok(MimeType.JSON, String.Empty), 
+          new Result<DreamMessage>())
+        .WhenDone(
+          a =>
+          {
+            if (a.Status == DreamStatus.Accepted)
+              result.Return();
+            else
+              result.Throw(new CouchException(a));
+          },
+          result.Throw
+        );
+      return result;
     }
+
+    /// <summary>
+    /// Compacts a design document.
+    /// </summary>
+    /// <param name="designName">Name of the design document to compact.</param>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public Result CompactDesignDocument(string designName, Result result)
+    {
+      if (String.IsNullOrEmpty(designName))
+        throw new ArgumentException("designName cannot be null nor empty");
+      if (result == null)
+        throw new ArgumentNullException("result");
+
+      BasePlug
+        .At(Constants.COMPACT)
+        .At(XUri.EncodeFragment(designName))
+        .Post(DreamMessage.Ok(MimeType.JSON, String.Empty), 
+          new Result<DreamMessage>())
+        .WhenDone(
+          a =>
+          {
+            if (a.Status == DreamStatus.Accepted)
+              result.Return();
+            else
+              result.Throw(new CouchException(a));
+          },
+          result.Throw
+        );
+      return result;
+    }
+
+    public Result<JObject> UpdateHandle(string designName, string functionName, 
+      Result<JObject> result)
+    {
+      if (String.IsNullOrEmpty(designName))
+        throw new ArgumentNullException("designName");
+      if (String.IsNullOrEmpty(functionName))
+        throw new ArgumentNullException("functionName");
+      if (result == null)
+        throw new ArgumentNullException("result");
+
+      BasePlug
+        .At(Constants.DESIGN)
+        .At(XUri.EncodeFragment(designName))
+        .At(Constants.UPDATE)
+        .At(XUri.EncodeFragment(functionName))
+        .Post(new Result<DreamMessage>())
+        .WhenDone(
+          a => result.Return(JObject.Parse(a.ToText())),
+          result.Throw
+        );
+      return result;
+    }
+
+    /* =========================================================================
+     * Synchronous methods 
+     * =======================================================================*/
+
+    /// <summary>
+    /// Retrieves information about the CouchDB database, such as the disk size
+    /// and document count. See CouchDatabaseInfo for more information.
+    /// </summary>
+    /// <returns>CouchDatabaseInfo object holding the database info.</returns>
     public CouchDatabaseInfo GetInfo()
     {
       return GetInfo(new Result<CouchDatabaseInfo>()).Wait();
     }
 
     /// <summary>
-    /// Request compaction of the specified database. Compaction compresses the disk database file
+    /// Compacts the database.
     /// </summary>
-    /// <param name="aResult"></param>
-    /// <returns></returns>
-    public Result Compact(Result aResult)
-    {
-      if (aResult == null)
-        throw new ArgumentNullException("aResult");
-
-      BasePlug.At(Constants.COMPACT).Post(DreamMessage.Ok(MimeType.JSON, String.Empty), new Result<DreamMessage>()).WhenDone(
-        a =>
-        {
-          if (a.Status == DreamStatus.Accepted)
-          {
-            aResult.Return();
-          }
-          else
-          {
-            aResult.Throw(new CouchException(a));
-          }
-        },
-        aResult.Throw
-      );
-      return aResult;
-    }
     public void Compact()
     {
       Compact(new Result()).Wait();
     }
 
     /// <summary>
-    /// Compacts the view indexes associated with the specified design document. You can use this in place of the full database compaction if
-    /// you know a specific set of view indexes have been affected by a recent database change
+    /// Compacts a design document.
     /// </summary>
-    /// <param name="aDocumentViewId">Design Document id to compact</param>
-    /// <param name="aResult"></param>
-    /// <returns></returns>
-    public Result CompactDocumentView(string aDocumentViewId, Result aResult)
+    /// <param name="designName">Name of the design document to compact.</param>
+    public void CompactDesignDocument(string designName)
     {
-      if (String.IsNullOrEmpty(aDocumentViewId))
-        throw new ArgumentException("aDocumentViewId cannot be null nor empty");
-      if (aResult == null)
-        throw new ArgumentNullException("aResult");
-
-      BasePlug.At(Constants.COMPACT).At(XUri.EncodeFragment(aDocumentViewId)).Post(DreamMessage.Ok(MimeType.JSON, String.Empty), new Result<DreamMessage>()).WhenDone(
-        a =>
-        {
-          if (a.Status == DreamStatus.Accepted)
-          {
-            aResult.Return();
-          }
-          else
-          {
-            aResult.Throw(new CouchException(a));
-          }
-        },
-        aResult.Throw
-      );
-      return aResult;
-    }
-    public void CompactDocumentView(string aDocumentViewId)
-    {
-      CompactDocumentView(aDocumentViewId, new Result()).Wait();
+      CompactDesignDocument(designName, new Result()).Wait();
     }
 
-    
-
-    #region Update Handlers
-    #region Asynchronous methods
-
-    public Result<JObject> UpdateHandle(string designId, string functionName, Result<JObject> result)
+    public JObject UpdateHandle(string designName, string functionName)
     {
-      if (String.IsNullOrEmpty(designId))
-        throw new ArgumentNullException("designId");
-      if (String.IsNullOrEmpty(functionName))
-        throw new ArgumentNullException("functionName");
-      if (result == null)
-        throw new ArgumentNullException("result");
-
-      BasePlug.At(Constants.DESIGN, XUri.EncodeFragment(designId), Constants.UPDATE, XUri.EncodeFragment(functionName)).Post(new Result<DreamMessage>()).WhenDone(
-          a => result.Return(JObject.Parse(a.ToText())),
-          result.Throw
-      );
-      return result;
+      return GetView(designName, functionName, new Result<JObject>()).Wait();
     }
-
-    #endregion
-
-    #region Synchronous methods
-
-    public JObject UpdateHandle(string designId, string functionName)
-    {
-      return GetView(designId, functionName, new Result<JObject>()).Wait();
-    }
-
-    #endregion
-    #endregion
   }
 }
