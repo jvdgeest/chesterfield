@@ -84,6 +84,9 @@
     <Compile Include="CouchDatabase.Attachments.cs">
       <DependentUpon>CouchDatabase.cs</DependentUpon>
     </Compile>
+    <Compile Include="CouchDatabase.Changes.cs">
+      <DependentUpon>CouchDatabase.cs</DependentUpon>
+    </Compile>
     <Compile Include="CouchDatabase.Documents.cs">
       <DependentUpon>CouchDatabase.cs</DependentUpon>
     </Compile>
