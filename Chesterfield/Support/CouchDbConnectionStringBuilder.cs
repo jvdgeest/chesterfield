@@ -18,9 +18,9 @@ namespace Chesterfield.Support
       get { return GetValue("Host", "localhost"); }
     }
 
-    public string UserName
+    public string Username
     {
-      get { return GetValue("UserName", String.Empty); }
+      get { return GetValue("Username", String.Empty); }
     }
 
     public string Database

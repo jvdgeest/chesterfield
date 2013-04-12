@@ -11,109 +11,125 @@ namespace Chesterfield.Support
   {
     protected Plug BasePlug;
 
-    protected CouchBase(Plug aPlug)
+    protected CouchBase(Plug plug)
     {
-      BasePlug = aPlug;
+      BasePlug = plug;
     }
 
-    protected CouchBase(XUri aBaseUri, string aUserName = null, string aPassword = null)
+    protected CouchBase(XUri baseUri, string username = null, 
+      string password = null)
     {
-      if (aBaseUri == null)
-        throw new ArgumentNullException("aBaseUri");
+      if (baseUri == null)
+        throw new ArgumentNullException("baseUri");
 
-      BasePlug = Plug.New(aBaseUri).WithCredentials(aUserName, aPassword);
+      BasePlug = Plug.New(baseUri).WithCredentials(username, password);
     }
 
     protected CouchBase(string connectionStringName)
     {
-      ConnectionStringSettings connectionString = ConfigurationManager.ConnectionStrings[connectionStringName];
+      ConnectionStringSettings connectionString = 
+        ConfigurationManager.ConnectionStrings[connectionStringName];
       if (connectionString == null)
         throw new ArgumentException("Invalid connection string name");
 
-      CouchDbConnectionStringBuilder cs = new CouchDbConnectionStringBuilder(connectionString.ConnectionString);
+      CouchDbConnectionStringBuilder cs = new CouchDbConnectionStringBuilder(
+        connectionString.ConnectionString);
 
-      BasePlug = Plug.New(String.Format("{0}://{1}:{2}", cs.SslEnabled ? "https" : "http", cs.Host, cs.Port))
-        .WithCredentials(cs.UserName, cs.Password);
+      BasePlug = Plug.New(String.Format("{0}://{1}:{2}", 
+        cs.SslEnabled ? "https" : "http", cs.Host, cs.Port)).WithCredentials(
+        cs.Username, cs.Password);
     }
 
     /// <summary>
     /// Perform Cookie base authentication with given username and password
     /// Resulting cookie will be automatically used for all subsequent requests
     /// </summary>
-    /// <param name="aUserName">User Name</param>
-    /// <param name="aPassword">Password</param>
-    /// <param name="aResult"></param>
+    /// <param name="username">User Name</param>
+    /// <param name="password">Password</param>
+    /// <param name="result"></param>
     /// <returns>true if authentication succeed</returns>
-    public Result<bool> Logon(string aUserName, string aPassword, Result<bool> aResult)
+    public Result<bool> Logon(string username, string password, 
+      Result<bool> result)
     {
-      if (String.IsNullOrEmpty(aUserName))
-        throw new ArgumentException("aUserName cannot be null nor empty");
-      if (String.IsNullOrEmpty(aPassword))
-        throw new ArgumentException("aPassword cannot be null nor empty");
-      if (aResult == null)
-        throw new ArgumentNullException("aResult");
+      if (String.IsNullOrEmpty(username))
+        throw new ArgumentException("username cannot be null nor empty");
+      if (String.IsNullOrEmpty(password))
+        throw new ArgumentException("password cannot be null nor empty");
+      if (result == null)
+        throw new ArgumentNullException("result");
 
-      string content = String.Format("name={0}&password={1}", aUserName, aPassword);
+      string content = String.Format("name={0}&password={1}", 
+        username, password);
 
-      BasePlug.At("_session").Post(DreamMessage.Ok(MimeType.FORM_URLENCODED, content), new Result<DreamMessage>()).WhenDone(
-        a =>
-        {
-          switch (a.Status)
+      BasePlug
+        .At("_session")
+        .Post(DreamMessage.Ok(MimeType.FORM_URLENCODED, content),
+          new Result<DreamMessage>())
+        .WhenDone(
+          a =>
           {
-            case DreamStatus.Ok:
-              BasePlug.CookieJar.Update(a.Cookies, new XUri(BasePlug.Uri.SchemeHostPort));
-              BasePlug = BasePlug.WithHeader("X-CouchDB-WWW-Authenticate", "Cookie");
-              aResult.Return(true);
-              break;
-            default:
-              aResult.Throw(new CouchException(a));
-              break;
-          }
-        },
-        aResult.Throw
-      );
-      return aResult;
+            switch (a.Status)
+            {
+              case DreamStatus.Ok:
+                BasePlug.CookieJar.Update(a.Cookies, 
+                  new XUri(BasePlug.Uri.SchemeHostPort));
+                BasePlug = BasePlug.WithHeader("X-CouchDB-WWW-Authenticate", 
+                  "Cookie");
+                result.Return(true);
+                break;
+              default:
+                result.Throw(new CouchException(a));
+                break;
+            }
+          },
+          result.Throw
+        );
+      return result;
     }
 
-    public Result<bool> Logoff(Result<bool> aResult)
+    public Result<bool> Logoff(Result<bool> result)
     {
-      if (aResult == null)
-        throw new ArgumentNullException("aResult");
+      if (result == null)
+        throw new ArgumentNullException("result");
 
-      BasePlug.At("_session").Delete(new Result<DreamMessage>()).WhenDone(
-        a =>
-        {
-          if (a.Status == DreamStatus.Ok)
-            aResult.Return(true);
-          else
-            aResult.Throw(new CouchException(a));
-        },
-        aResult.Throw
-      );
-      return aResult;
+      BasePlug
+        .At("_session")
+        .Delete(new Result<DreamMessage>())
+        .WhenDone(
+          a =>
+          {
+            if (a.Status == DreamStatus.Ok)
+              result.Return(true);
+            else
+              result.Throw(new CouchException(a));
+          },
+          result.Throw
+        );
+      return result;
     }
 
-    public Result<bool> IsLogged(Result<bool> aResult)
+    public Result<bool> IsLogged(Result<bool> result)
     {
-      if (aResult == null)
-        throw new ArgumentNullException("aResult");
+      if (result == null)
+        throw new ArgumentNullException("result");
 
-      BasePlug.At("_session").Get(new Result<DreamMessage>()).WhenDone(
-        a =>
-        {
-          if (a.Status == DreamStatus.Ok)
+      BasePlug
+        .At("_session")
+        .Get(new Result<DreamMessage>())
+        .WhenDone(
+          a =>
           {
-            JObject user = JObject.Parse(a.ToText());
-            aResult.Return(user["info"]["authenticated"] != null);
-          }
-          else
-          {
-            aResult.Throw(new CouchException(a));
-          }
-        },
-        aResult.Throw
-      );
-      return aResult;
+            if (a.Status == DreamStatus.Ok)
+            {
+              JObject user = JObject.Parse(a.ToText());
+              result.Return(user["info"]["authenticated"] != null);
+            }
+            else
+              result.Throw(new CouchException(a));
+          },
+          result.Throw
+        );
+      return result;
     }
   }
 }
