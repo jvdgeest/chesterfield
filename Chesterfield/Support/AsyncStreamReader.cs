@@ -16,12 +16,7 @@ namespace Chesterfield.Support
 
   public class AsyncStreamReader : IDisposable
   {
-    //TODO: Fix this.
-    //Mindtouch Dream always creates a BufferedStream, a larger buffer creates a delay
-    //Pending Pull Request : https://github.com/MindTouch/DReAM/pull/4
-    //Corresponding Ticket in Mindtouch Bug Tracker :http://youtrack.developer.mindtouch.com/issue/DR-31
-    private readonly byte[] theReadBuffer = new byte[1];
-
+    private readonly byte[] theReadBuffer = new byte[1024];
     private readonly List<byte> theTempLineBytes = new List<byte>();
     private readonly EventHandler<LineReceivedEventArgs> theLineReaded;
     private readonly Stream theBaseStream;
