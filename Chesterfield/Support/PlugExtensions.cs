@@ -5,102 +5,97 @@ namespace Chesterfield.Support
 {
   public static class PlugExtensions
   {
-    public static Plug With(this Plug aPlug, ViewOptions aViewOptions)
+    public static Plug With(this Plug plug, ViewOptions viewOptions)
     {
-      if (aViewOptions == null)
-        return aPlug;
+      if (viewOptions == null)
+        return plug;
 
-      if ((aViewOptions.Key != null) && (aViewOptions.Key.Count > 0))
-        aPlug = aPlug.With(Constants.KEY, aViewOptions.Key.ToString());
-      if ((aViewOptions.StartKey != null) && (aViewOptions.StartKey.HasValues))
-        aPlug = aPlug.With(Constants.STARTKEY, aViewOptions.StartKey.ToString());
-      if ((aViewOptions.EndKey != null) && (aViewOptions.EndKey.Count > 0))
-        aPlug = aPlug.With(Constants.ENDKEY, aViewOptions.EndKey.ToString());
-      if (aViewOptions.Limit.HasValue)
-        aPlug = aPlug.With(Constants.LIMIT, aViewOptions.Limit.Value);
-      if (aViewOptions.Skip.HasValue)
-        aPlug = aPlug.With(Constants.SKIP, aViewOptions.Skip.ToString());
-      if (aViewOptions.Reduce.HasValue)
-        aPlug = aPlug.With(Constants.REDUCE, aViewOptions.Reduce.Value ? "true" : "false");
-      if (aViewOptions.Group.HasValue)
-        aPlug = aPlug.With(Constants.GROUP, aViewOptions.Group.Value ? "true" : "false");
-      if (aViewOptions.InclusiveEnd.HasValue)
-        aPlug = aPlug.With(Constants.INCLUSIVE_END, aViewOptions.InclusiveEnd.Value ? "true" : "false");
-      if (aViewOptions.IncludeDocs.HasValue)
-        aPlug = aPlug.With(Constants.INCLUDE_DOCS, aViewOptions.IncludeDocs.Value ? "true" : "false");
-      if (aViewOptions.GroupLevel.HasValue)
-        aPlug = aPlug.With(Constants.GROUP_LEVEL, aViewOptions.GroupLevel.Value);
-      if (aViewOptions.Descending.HasValue)
-        aPlug = aPlug.With(Constants.DESCENDING, aViewOptions.Descending.Value ? "true" : "false");
-      if (aViewOptions.Stale.HasValue)
+      if ((viewOptions.Key != null) && (viewOptions.Key.Count > 0))
+        plug = plug.With(Constants.KEY, viewOptions.Key.ToString());
+      if ((viewOptions.StartKey != null) && (viewOptions.StartKey.HasValues))
+        plug = plug.With(Constants.STARTKEY, viewOptions.StartKey.ToString());
+      if ((viewOptions.EndKey != null) && (viewOptions.EndKey.Count > 0))
+        plug = plug.With(Constants.ENDKEY, viewOptions.EndKey.ToString());
+      if (viewOptions.Limit.HasValue)
+        plug = plug.With(Constants.LIMIT, viewOptions.Limit.Value);
+      if (viewOptions.Skip.HasValue)
+        plug = plug.With(Constants.SKIP, viewOptions.Skip.ToString());
+      if (viewOptions.Reduce.HasValue)
+        plug = plug.With(Constants.REDUCE, 
+          viewOptions.Reduce.Value ? "true" : "false");
+      if (viewOptions.Group.HasValue)
+        plug = plug.With(Constants.GROUP, 
+          viewOptions.Group.Value ? "true" : "false");
+      if (viewOptions.InclusiveEnd.HasValue)
+        plug = plug.With(Constants.INCLUSIVE_END, 
+          viewOptions.InclusiveEnd.Value ? "true" : "false");
+      if (viewOptions.IncludeDocs.HasValue)
+        plug = plug.With(Constants.INCLUDE_DOCS, 
+          viewOptions.IncludeDocs.Value ? "true" : "false");
+      if (viewOptions.GroupLevel.HasValue)
+        plug = plug.With(Constants.GROUP_LEVEL, viewOptions.GroupLevel.Value);
+      if (viewOptions.Descending.HasValue)
+        plug = plug.With(Constants.DESCENDING, 
+          viewOptions.Descending.Value ? "true" : "false");
+      if (viewOptions.Stale.HasValue)
       {
-        switch (aViewOptions.Stale.Value)
+        switch (viewOptions.Stale.Value)
         {
           case Stale.Normal:
-            aPlug = aPlug.With(Constants.STALE, Constants.OK);
+            plug = plug.With(Constants.STALE, Constants.OK);
             break;
           case Stale.UpdateAfter:
-            aPlug = aPlug.With(Constants.STALE, Constants.UPDATE_AFTER);
+            plug = plug.With(Constants.STALE, Constants.UPDATE_AFTER);
             break;
           default:
             throw new ArgumentException("Invalid Stale Option");
         }
       }
-      if (!string.IsNullOrEmpty(aViewOptions.StartKeyDocId))
-        aPlug = aPlug.With(Constants.STARTKEY_DOCID, aViewOptions.StartKeyDocId);
-      if (!string.IsNullOrEmpty(aViewOptions.EndKeyDocId))
-        aPlug = aPlug.With(Constants.ENDKEY_DOCID, aViewOptions.EndKeyDocId);
-      if (!string.IsNullOrEmpty(aViewOptions.Etag))
-        aPlug = aPlug.WithHeader(DreamHeaders.IF_NONE_MATCH, aViewOptions.Etag);
-      return aPlug;
+      if (!string.IsNullOrEmpty(viewOptions.StartKeyDocId))
+        plug = plug.With(Constants.STARTKEY_DOCID, viewOptions.StartKeyDocId);
+      if (!string.IsNullOrEmpty(viewOptions.EndKeyDocId))
+        plug = plug.With(Constants.ENDKEY_DOCID, viewOptions.EndKeyDocId);
+      if (!string.IsNullOrEmpty(viewOptions.Etag))
+        plug = plug.WithHeader(DreamHeaders.IF_NONE_MATCH, viewOptions.Etag);
+
+      return plug;
     }
-    public static Plug With(this Plug aPlug, ChangeOptions aChangeOptions)
+
+    public static Plug With(this Plug plug, ChangeOptions changeOptions)
     {
-      switch (aChangeOptions.Feed)
+      switch (changeOptions.Feed)
       {
         case ChangeFeed.LongPoll:
         case ChangeFeed.Normal:
-          aPlug = aPlug.With(Constants.FEED, Constants.FEED_NORMAL);
+          plug = plug.With(Constants.FEED, Constants.FEED_NORMAL);
           break;
         case ChangeFeed.Continuous:
-          aPlug = aPlug.With(Constants.FEED, Constants.FEED_CONTINUOUS);
+          plug = plug.With(Constants.FEED, Constants.FEED_CONTINUOUS);
           break;
         default:
           //Never get here
           break;
       }
+      if (!String.IsNullOrEmpty(changeOptions.Filter))
+        plug = plug.With(Constants.FILTER, XUri.Encode(changeOptions.Filter));
+      if (!String.IsNullOrEmpty(changeOptions.View))
+      {
+        plug = plug.With(Constants.FILTER, XUri.Encode(Constants.VIEW));
+        plug = plug.With(Constants.VIEW_PARAMETER, changeOptions.View);
+      }
+      if (changeOptions.Heartbeat.HasValue)
+        plug = plug.With(Constants.HEARTBEAT, changeOptions.Heartbeat.Value);
+      if (changeOptions.IncludeDocs.HasValue)
+        plug = plug.With(Constants.INCLUDE_DOCS, 
+          changeOptions.IncludeDocs.Value ? "true" : "false");
+      if (changeOptions.Limit.HasValue)
+        plug = plug.With(Constants.LIMIT, changeOptions.Limit.Value);
+      if (changeOptions.Since.HasValue)
+        plug = plug.With(Constants.SINCE, changeOptions.Since.Value);
+      if (changeOptions.Timeout.HasValue)
+        plug = plug.With(Constants.TIMEOUT, changeOptions.Timeout.Value);
 
-      if (!String.IsNullOrEmpty(aChangeOptions.Filter))
-      {
-        aPlug = aPlug.With(Constants.FILTER, XUri.Encode(aChangeOptions.Filter));
-      }
-      if (!String.IsNullOrEmpty(aChangeOptions.View))
-      {
-        aPlug = aPlug.With(Constants.FILTER, XUri.Encode(Constants.VIEW));
-        aPlug = aPlug.With(Constants.VIEW_PARAMETER, aChangeOptions.View);
-      }
-      if (aChangeOptions.Heartbeat.HasValue)
-      {
-        aPlug = aPlug.With(Constants.HEARTBEAT, aChangeOptions.Heartbeat.Value);
-      }
-      if (aChangeOptions.IncludeDocs.HasValue)
-      {
-        aPlug = aPlug.With(Constants.INCLUDE_DOCS, aChangeOptions.IncludeDocs.Value ? "true" : "false");
-      }
-      if (aChangeOptions.Limit.HasValue)
-      {
-        aPlug = aPlug.With(Constants.LIMIT, aChangeOptions.Limit.Value);
-      }
-      if (aChangeOptions.Since.HasValue)
-      {
-        aPlug = aPlug.With(Constants.SINCE, aChangeOptions.Since.Value);
-      }
-      if (aChangeOptions.Timeout.HasValue)
-      {
-        aPlug = aPlug.With(Constants.TIMEOUT, aChangeOptions.Timeout.Value);
-      }
-
-      return aPlug;
+      return plug;
     }
   }
 }
