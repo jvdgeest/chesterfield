@@ -13,12 +13,14 @@ namespace Chesterfield
       get;
       internal set;
     }
+
     [JsonProperty(Constants.OFFSET)]
     public int OffSet
     {
       get;
       internal set;
     }
+
     [JsonIgnore]
     public string ETag { get; internal set; }
 
@@ -26,7 +28,8 @@ namespace Chesterfield
     public DreamStatus Status { get; internal set; }
   }
 
-  public class ViewResult<TKey, TValue> : BaseViewResult, IViewResult<TKey, TValue>
+  public class ViewResult<TKey, TValue> : BaseViewResult, 
+    IViewResult<TKey, TValue>
   {
     [JsonProperty(Constants.ROWS)]
     public IEnumerable<ViewResultRow<TKey, TValue>> Rows
@@ -36,7 +39,8 @@ namespace Chesterfield
     }
   }
 
-  public class ViewResult<TKey, TValue, TDocument> : BaseViewResult, IViewResult<TKey, TValue, TDocument> where TDocument : ICouchDocument
+  public class ViewResult<TKey, TValue, TDocument> : BaseViewResult, 
+    IViewResult<TKey, TValue, TDocument> where TDocument : ICouchDocument
   {
     [JsonProperty(Constants.ROWS)]
     public IEnumerable<ViewResultRow<TKey, TValue, TDocument>> Rows
