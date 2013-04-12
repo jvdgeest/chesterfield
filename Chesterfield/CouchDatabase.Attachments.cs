@@ -15,10 +15,9 @@ namespace Chesterfield
      * =======================================================================*/
 
     /// <summary>
-    /// Adds an attachment to a document. The document revision must be 
-    /// specified when using this method.
-    /// <para>&#160;</para>
-    /// This method is asynchronous.
+    /// <para>Adds an attachment to a document. The document revision must be 
+    /// specified when using this method.</para>
+    /// <para>(This method is asynchronous.)</para>
     /// </summary>
     /// <param name="id">ID of the CouchDB document.</param>
     /// <param name="rev">Revision of the CouchDB document.</param>
@@ -74,10 +73,9 @@ namespace Chesterfield
     }
 
     /// <summary>
-    /// Deletes an attachment from a document. The document revision must be 
-    /// specified when using this method.
-    /// <para>&#160;</para>
-    /// This method is asynchronous.
+    /// <para>Deletes an attachment from a document. The document revision must
+    /// be specified when using this method.</para>
+    /// <para>(This method is asynchronous.)</para>
     /// </summary>
     /// <param name="id">ID of the CouchDB document.</param>
     /// <param name="rev">Revision of the CouchDB document.</param>
@@ -119,10 +117,9 @@ namespace Chesterfield
     }
 
     /// <summary>
-    /// Retrieves an attachment. The document revision must be specified when 
-    /// using this method.
-    /// <para>&#160;</para>
-    /// This method is asynchronous.
+    /// <para>Retrieves an attachment. The document revision must be specified 
+    /// when using this method.</para>
+    /// <para>(This method is asynchronous.)</para>
     /// </summary>
     /// <param name="id">ID of the CouchDB document.</param>
     /// <param name="rev">Revision of the CouchDB document.</param>
@@ -163,10 +160,9 @@ namespace Chesterfield
     }
 
     /// <summary>
-    /// Adds an attachment to a document. The document revision must be 
-    /// specified when using this method.
-    /// <para>&#160;</para>
-    /// This method is asynchronous.
+    /// <para>Adds an attachment to a document. The document revision must be 
+    /// specified when using this method.</para>
+    /// <para>(This method is asynchronous.)</para>
     /// </summary>
     /// <param name="id">ID of the CouchDB document.</param>
     /// <param name="rev">Revision of the CouchDB document.</param>
@@ -192,10 +188,9 @@ namespace Chesterfield
     }
 
     /// <summary>
-    /// Adds an attachment to a document. The document revision must be 
-    /// specified when using this method.
-    /// <para>&#160;</para>
-    /// This method is asynchronous.
+    /// <para>Adds an attachment to a document. The document revision must be 
+    /// specified when using this method.</para>
+    /// <para>(This method is asynchronous.)</para>
     /// </summary>
     /// <param name="id">ID of the CouchDB document.</param>
     /// <param name="rev">Revision of the CouchDB document.</param>
@@ -218,11 +213,10 @@ namespace Chesterfield
     }
 
     /// <summary>
-    /// Adds an attachment to a document. The most recent revision will be 
+    /// <para>Adds an attachment to a document. The most recent revision will be 
     /// used. Warning: if you need to prevent document update conflicts, then 
-    /// please use the method that specifies the revision.
-    /// <para>&#160;</para>
-    /// This method is asynchronous.
+    /// please use the method that specifies the revision.</para>
+    /// <para>(This method is asynchronous.)</para>
     /// </summary>
     /// <param name="id">ID of the CouchDB document.</param>
     /// <param name="attachment">Stream of the attachment. Will be closed once 
@@ -256,11 +250,10 @@ namespace Chesterfield
     }
 
     /// <summary>
-    /// Adds an attachment to a document. The most recent revision will be 
+    /// <para>Adds an attachment to a document. The most recent revision will be 
     /// used. Warning: if you need to prevent document update conflicts, then 
-    /// please use the method that specifies the revision.
-    /// <para>&#160;</para>
-    /// This method is asynchronous.
+    /// please use the method that specifies the revision.</para>
+    /// <para>(This method is asynchronous.)</para>
     /// </summary>
     /// <param name="id">ID of the CouchDB document.</param>
     /// <param name="attachment">Stream of the attachment. Must be seekable and 
@@ -280,11 +273,10 @@ namespace Chesterfield
     }
 
     /// <summary>
-    /// Adds an attachment from a specified path. The most recent revision will 
-    /// be used. Warning: if you need to prevent document update conflicts, then 
-    /// please use the method that specifies the revision.
-    /// <para>&#160;</para>
-    /// This method is asynchronous.
+    /// <para>Adds an attachment from a specified path. The most recent revision
+    /// will be used. Warning: if you need to prevent document update conflicts,
+    /// then please use the method that specifies the revision.</para>
+    /// <para>(This method is asynchronous.)</para>
     /// </summary>
     /// <param name="doc">ICouchDocument object.</param>
     /// <param name="filePath">Path of the attachment to be added.</param>
@@ -307,9 +299,9 @@ namespace Chesterfield
     }
 
     /// <summary>
-    /// Retrieves an attachment. The most recent revision will be used.
-    /// <para>&#160;</para>
-    /// This method is asynchronous.
+    /// <para>Retrieves an attachment. The most recent revision will be used.
+    /// </para>
+    /// <para>(This method is asynchronous.)</para>
     /// </summary>
     /// <param name="doc">ICouchDocument object.</param>
     /// <param name="fileName">Filename of the attachment.</param>
@@ -327,9 +319,9 @@ namespace Chesterfield
     }
 
     /// <summary>
-    /// Retrieves an attachment. The most recent revision will be used.
-    /// <para>&#160;</para>
-    /// This method is asynchronous.
+    /// <para>Retrieves an attachment. The most recent revision will be used.
+    /// </para>
+    /// <para>(This method is asynchronous.)</para>
     /// </summary>
     /// <param name="id">ID of the CouchDB document.</param>
     /// <param name="fileName">Filename of the attachment.</param>
@@ -348,9 +340,9 @@ namespace Chesterfield
     }
 
     /// <summary>
-    /// Deletes an attachment. The most recent revision will be used.
-    /// <para>&#160;</para>
-    /// This method is asynchronous.
+    /// <para>Deletes an attachment. The most recent revision will be used.
+    /// </para>
+    /// <para>(This method is asynchronous.)</para>
     /// </summary>
     /// <param name="id">ID of the CouchDB document.</param>
     /// <param name="fileName">Filename of the attachment.</param>
@@ -369,9 +361,9 @@ namespace Chesterfield
     }
 
     /// <summary>
-    /// Deletes an attachment. The most recent revision will be used.
-    /// <para>&#160;</para>
-    /// This method is asynchronous.
+    /// <para>Deletes an attachment. The most recent revision will be used.
+    /// </para>
+    /// <para>(This method is asynchronous.)</para>
     /// </summary>
     /// <param name="doc">ICouchDocument object.</param>
     /// <param name="fileName">Filename of the attachment.</param>
