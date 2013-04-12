@@ -96,6 +96,8 @@ namespace Chesterfield
 
     /// <summary>
     /// Compacts a design document.
+    /// <para>&#160;</para>
+    /// This method is asynchronous.
     /// </summary>
     /// <param name="designName">Name of the design document to compact.</param>
     /// <param name="result"></param>
@@ -125,7 +127,9 @@ namespace Chesterfield
       return result;
     }
 
-    public Result<JObject> UpdateHandle(string designName, string functionName, 
+    public Result<JObject> UpdateHandle(
+      string designName, 
+      string functionName, 
       Result<JObject> result)
     {
       if (String.IsNullOrEmpty(designName))

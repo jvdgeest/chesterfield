@@ -14,15 +14,19 @@ namespace Chesterfield
      * Asynchronous methods 
      * =======================================================================*/
 
-    public Result<ViewResult<TKey, TValue>> GetView<TKey, TValue>(string viewId, 
-      string viewName, Result<ViewResult<TKey, TValue>> result)
+    public Result<ViewResult<TKey, TValue>> GetView<TKey, TValue>(
+      string viewId, 
+      string viewName, 
+      Result<ViewResult<TKey, TValue>> result)
     {
       return GetView(viewId, viewName, new ViewOptions(), result);
     }
 
-    public Result<ViewResult<TKey, TValue>> GetView<TKey, TValue>(string viewId, 
-      string viewName, ViewOptions options, Result<ViewResult<TKey, TValue>> 
-      result)
+    public Result<ViewResult<TKey, TValue>> GetView<TKey, TValue>(
+      string viewId, 
+      string viewName, 
+      ViewOptions options, 
+      Result<ViewResult<TKey, TValue>> result)
     {
       if (String.IsNullOrEmpty(viewId))
         throw new ArgumentNullException("viewId");
@@ -38,16 +42,22 @@ namespace Chesterfield
       return result;
     }
 
-    public Result<ViewResult<TKey, TValue, TDocument>> GetView<TKey, TValue, 
-      TDocument>(string viewId, string viewName, Result<ViewResult<TKey, TValue, 
-      TDocument>> result) where TDocument : ICouchDocument
+    public Result<ViewResult<TKey, TValue, TDocument>> 
+      GetView<TKey, TValue, TDocument>(
+        string viewId, 
+        string viewName, 
+        Result<ViewResult<TKey, TValue, TDocument>> result) 
+      where TDocument : ICouchDocument
     {
       return GetView(viewId, viewName, new ViewOptions(), result);
     }
 
-    public Result<ViewResult<TKey, TValue, TDocument>> GetView<TKey, TValue, 
-      TDocument>(string viewId, string viewName, ViewOptions options, 
-      Result<ViewResult<TKey, TValue, TDocument>> result) 
+    public Result<ViewResult<TKey, TValue, TDocument>> 
+      GetView<TKey, TValue, TDocument>(
+        string viewId, 
+        string viewName, 
+        ViewOptions options, 
+        Result<ViewResult<TKey, TValue, TDocument>> result) 
       where TDocument : ICouchDocument
     {
       if (String.IsNullOrEmpty(viewId))
@@ -68,13 +78,15 @@ namespace Chesterfield
     }
 
     public Result<ViewResult<TKey, TValue>> GetTempView<TKey, TValue>(
-      CouchView view, Result<ViewResult<TKey, TValue>> result)
+      CouchView view, 
+      Result<ViewResult<TKey, TValue>> result)
     {
       return GetTempView(view, null, result);
     }
 
     public Result<ViewResult<TKey, TValue>> GetTempView<TKey, TValue>(
-      CouchView view, ViewOptions options, 
+      CouchView view, 
+      ViewOptions options, 
       Result<ViewResult<TKey, TValue>> result)
     {
       if (view == null)
@@ -101,16 +113,21 @@ namespace Chesterfield
       return result;
     }
 
-    public Result<ViewResult<TKey, TValue, TDocument>> GetTempView<TKey, TValue, 
-      TDocument>(CouchView view, Result<ViewResult<TKey, TValue, TDocument>> 
-      result) where TDocument : ICouchDocument
+    public Result<ViewResult<TKey, TValue, TDocument>> 
+      GetTempView<TKey, TValue, TDocument>(
+        CouchView view, 
+        Result<ViewResult<TKey, TValue, TDocument>> result) 
+      where TDocument : ICouchDocument
     {
       return GetTempView(view, null, result);
     }
 
-    public Result<ViewResult<TKey, TValue, TDocument>> GetTempView<TKey, TValue, 
-      TDocument>(CouchView view, ViewOptions options, Result<ViewResult<TKey, 
-      TValue, TDocument>> result) where TDocument : ICouchDocument
+    public Result<ViewResult<TKey, TValue, TDocument>> 
+      GetTempView<TKey, TValue, TDocument>(
+        CouchView view, 
+        ViewOptions options, 
+        Result<ViewResult<TKey, TValue, TDocument>> result) 
+      where TDocument : ICouchDocument
     {
       if (view == null)
         throw new ArgumentNullException("view");
@@ -136,14 +153,19 @@ namespace Chesterfield
       return result;
     }
 
-    public Result<JObject> GetView(string viewId, string viewName, 
+    public Result<JObject> GetView(
+      string viewId, 
+      string viewName, 
       Result<JObject> result)
     {
       return GetView(viewId, viewName, new ViewOptions(), result);
     }
 
-    public Result<JObject> GetView(string viewId, string viewName, 
-      ViewOptions options, Result<JObject> result)
+    public Result<JObject> GetView(
+      string viewId, 
+      string viewName, 
+      ViewOptions options, 
+      Result<JObject> result)
     {
       if (String.IsNullOrEmpty(viewId))
         throw new ArgumentNullException("viewId");
@@ -163,32 +185,41 @@ namespace Chesterfield
      * Synchronous methods 
      * =======================================================================*/
 
-    public ViewResult<TKey, TValue> GetView<TKey, TValue>(string viewId, 
+    public ViewResult<TKey, TValue> GetView<TKey, TValue>(
+      string viewId, 
       string viewName)
     {
       return GetView(viewId, viewName, 
         new Result<ViewResult<TKey, TValue>>()).Wait();
     }
 
-    public ViewResult<TKey, TValue> GetView<TKey, TValue>(string viewId, 
-      string viewName, ViewOptions options)
+    public ViewResult<TKey, TValue> GetView<TKey, TValue>(
+      string viewId, 
+      string viewName, 
+      ViewOptions options)
     {
       return GetView(viewId, viewName, options, 
         new Result<ViewResult<TKey, TValue>>()).Wait();
     }
 
-    public ViewResult<TKey, TValue, TDocument> GetView<TKey, TValue, TDocument>
-      (string viewId, string viewName) where TDocument : ICouchDocument
+    public ViewResult<TKey, TValue, TDocument> 
+      GetView<TKey, TValue, TDocument>(
+        string viewId, 
+        string viewName) 
+      where TDocument : ICouchDocument
     {
       return GetView(viewId, viewName, 
         new Result<ViewResult<TKey, TValue, TDocument>>()).Wait();
     }
 
-    public ViewResult<TKey, TValue, TDocument> GetView<TKey, TValue, TDocument>
-      (string viewId, string viewName, ViewOptions options) 
+    public ViewResult<TKey, TValue, TDocument> 
+      GetView<TKey, TValue, TDocument>(
+        string viewId,
+        string viewName,
+        ViewOptions options)
       where TDocument : ICouchDocument
     {
-      return GetView(viewId, viewName, options, 
+      return GetView(viewId, viewName, options,
         new Result<ViewResult<TKey, TValue, TDocument>>()).Wait();
     }
 
@@ -198,22 +229,27 @@ namespace Chesterfield
         new Result<ViewResult<TKey, TValue>>()).Wait();
     }
 
-    public ViewResult<TKey, TValue> GetTempView<TKey, TValue>(CouchView view, 
+    public ViewResult<TKey, TValue> GetTempView<TKey, TValue>(
+      CouchView view, 
       ViewOptions options)
     {
       return GetTempView(view, options, 
         new Result<ViewResult<TKey, TValue>>()).Wait();
     }
 
-    public ViewResult<TKey, TValue, TDocument> GetTempView<TKey, TValue, 
-      TDocument>(CouchView view) where TDocument : ICouchDocument
+    public ViewResult<TKey, TValue, TDocument> 
+      GetTempView<TKey, TValue, TDocument>(
+        CouchView view) 
+      where TDocument : ICouchDocument
     {
       return GetTempView(view, null, 
         new Result<ViewResult<TKey, TValue, TDocument>>()).Wait();
     }
 
-    public ViewResult<TKey, TValue, TDocument> GetTempView<TKey, TValue, 
-      TDocument>(CouchView view, ViewOptions options) 
+    public ViewResult<TKey, TValue, TDocument> 
+      GetTempView<TKey, TValue, TDocument>(
+        CouchView view, 
+        ViewOptions options) 
       where TDocument : ICouchDocument
     {
       return GetTempView(view, options, 
@@ -234,8 +270,11 @@ namespace Chesterfield
      * Private methods 
      * =======================================================================*/
 
-    private Result<DreamMessage> GetView(string viewId, string viewName, 
-      ViewOptions options, Result<DreamMessage> result)
+    private Result<DreamMessage> GetView(
+      string viewId, 
+      string viewName, 
+      ViewOptions options, 
+      Result<DreamMessage> result)
     {
       if (String.IsNullOrEmpty(viewId))
         throw new ArgumentNullException("viewId");
@@ -263,8 +302,8 @@ namespace Chesterfield
       return result;
     }
 
-    private static ViewResult<TKey, TValue> GetViewResult<TKey, TValue>
-      (DreamMessage aDreamMessage)
+    private static ViewResult<TKey, TValue> GetViewResult<TKey, TValue>(
+      DreamMessage aDreamMessage)
     {
       ViewResult<TKey, TValue> val;
       switch (aDreamMessage.Status)
@@ -283,8 +322,9 @@ namespace Chesterfield
       return val;
     }
 
-    private static ViewResult<TKey, TValue, TDocument> GetViewResult<TKey, 
-      TValue, TDocument>(DreamMessage aDreamMessage) 
+    private static ViewResult<TKey, TValue, TDocument> 
+      GetViewResult<TKey, TValue, TDocument>(
+        DreamMessage aDreamMessage) 
       where TDocument : ICouchDocument
     {
       ViewResult<TKey, TValue, TDocument> val;

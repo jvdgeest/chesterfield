@@ -18,7 +18,8 @@ namespace Chesterfield
     /// <param name="changeOptions">Change options</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public Result<CouchChanges> GetChanges(ChangeOptions changeOptions, 
+    public Result<CouchChanges> GetChanges(
+      ChangeOptions changeOptions, 
       Result<CouchChanges> result)
     {
       if (changeOptions == null)
@@ -55,8 +56,11 @@ namespace Chesterfield
     /// <param name="changeOptions">Change options</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public Result<CouchChanges<T>> GetChanges<T>(ChangeOptions changeOptions, 
-      Result<CouchChanges<T>> result) where T : ICouchDocument
+    public Result<CouchChanges<T>> 
+      GetChanges<T>(
+        ChangeOptions changeOptions, 
+        Result<CouchChanges<T>> result) 
+      where T : ICouchDocument
     {
       if (changeOptions == null)
         throw new ArgumentNullException("changeOptions");
@@ -94,7 +98,8 @@ namespace Chesterfield
     /// <param name="result"></param>
     /// <returns></returns>
     public Result<CouchContinuousChanges> GetCoutinuousChanges(
-      ChangeOptions changeOptions, CouchChangeDelegate callback,
+      ChangeOptions changeOptions, 
+      CouchChangeDelegate callback,
       Result<CouchContinuousChanges> result)
     {
       if (changeOptions == null)
@@ -130,9 +135,12 @@ namespace Chesterfield
     /// <param name="callback">Callback used for each change notification</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public Result<CouchContinuousChanges<T>> GetCoutinuousChanges<T>(
-      ChangeOptions changeOptions, CouchChangeDelegate<T> callback,
-      Result<CouchContinuousChanges<T>> result) where T : ICouchDocument
+    public Result<CouchContinuousChanges<T>> 
+      GetCoutinuousChanges<T>(
+        ChangeOptions changeOptions, 
+        CouchChangeDelegate<T> callback,
+        Result<CouchContinuousChanges<T>> result) 
+      where T : ICouchDocument
     {
       if (changeOptions == null)
         throw new ArgumentNullException("changeOptions");
@@ -193,7 +201,8 @@ namespace Chesterfield
     /// <param name="callback">Callback used for each change notification</param>
     /// <returns></returns>
     public CouchContinuousChanges GetCoutinuousChanges(
-      ChangeOptions changeOptions, CouchChangeDelegate callback)
+      ChangeOptions changeOptions, 
+      CouchChangeDelegate callback)
     {
       return GetCoutinuousChanges(changeOptions, callback, 
         new Result<CouchContinuousChanges>()).Wait();
@@ -206,8 +215,10 @@ namespace Chesterfield
     /// <param name="changeOptions">Change options</param>
     /// <param name="callback">Callback used for each change notification</param>
     /// <returns></returns>
-    public CouchContinuousChanges<T> GetCoutinuousChanges<T>(
-      ChangeOptions changeOptions, CouchChangeDelegate<T> callback) 
+    public CouchContinuousChanges<T> 
+      GetCoutinuousChanges<T>(
+        ChangeOptions changeOptions, 
+        CouchChangeDelegate<T> callback) 
       where T : ICouchDocument
     {
       return GetCoutinuousChanges(changeOptions, callback, 

@@ -19,7 +19,8 @@ namespace Chesterfield
     }
 
     public Result<ViewResult<TKey, TValue>> GetAllDocuments<TKey, TValue>(
-      ViewOptions viewOptions, Result<ViewResult<TKey, TValue>> result)
+      ViewOptions viewOptions, 
+      Result<ViewResult<TKey, TValue>> result)
     {
       if (viewOptions == null)
         throw new ArgumentNullException("viewOptions");
@@ -44,16 +45,18 @@ namespace Chesterfield
       return result;
     }
 
-    public Result<ViewResult<TKey, TValue, TDocument>> GetAllDocuments<TKey, 
-      TValue, TDocument>(Result<ViewResult<TKey, TValue, TDocument>> result) 
+    public Result<ViewResult<TKey, TValue, TDocument>> 
+      GetAllDocuments<TKey, TValue, TDocument>(
+        Result<ViewResult<TKey, TValue, TDocument>> result) 
       where TDocument : ICouchDocument
     {
       return GetAllDocuments(new ViewOptions(), result);
     }
 
-    public Result<ViewResult<TKey, TValue, TDocument>> GetAllDocuments<TKey, 
-      TValue, TDocument>(ViewOptions viewOptions, Result<ViewResult<TKey, 
-      TValue, TDocument>> result) 
+    public Result<ViewResult<TKey, TValue, TDocument>> 
+      GetAllDocuments<TKey, TValue, TDocument>(
+        ViewOptions viewOptions, 
+        Result<ViewResult<TKey, TValue, TDocument>> result) 
       where TDocument : ICouchDocument
     {
       if (viewOptions == null)
@@ -95,14 +98,17 @@ namespace Chesterfield
         new Result<ViewResult<TKey, TValue>>()).Wait();
     }
 
-    public ViewResult<TKey, TValue, TDocument> GetAllDocuments<TKey, TValue, 
-      TDocument>() where TDocument : ICouchDocument
+    public ViewResult<TKey, TValue, TDocument> 
+      GetAllDocuments<TKey, TValue, TDocument>() 
+      where TDocument : ICouchDocument
     {
       return GetAllDocuments<TKey, TValue, TDocument>(new ViewOptions());
     }
 
-    public ViewResult<TKey, TValue, TDocument> GetAllDocuments<TKey, TValue, 
-      TDocument>(ViewOptions viewOptions) where TDocument : ICouchDocument
+    public ViewResult<TKey, TValue, TDocument> 
+      GetAllDocuments<TKey, TValue, TDocument>(
+        ViewOptions viewOptions) 
+      where TDocument : ICouchDocument
     {
       return GetAllDocuments(viewOptions, 
         new Result<ViewResult<TKey, TValue, TDocument>>()).Wait();

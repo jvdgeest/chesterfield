@@ -38,7 +38,9 @@ namespace Chesterfield
     /// <param name="json">JSON data for creating the document.</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public Result<string> CreateDocument(string id, string json, 
+    public Result<string> CreateDocument(
+      string id, 
+      string json, 
       Result<string> result)
     {
       if (String.IsNullOrEmpty(json))
@@ -84,7 +86,10 @@ namespace Chesterfield
     /// <param name="json">JSON data for updating the document.</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public Result<string> UpdateDocument(string id, string rev, string json, 
+    public Result<string> UpdateDocument(
+      string id, 
+      string rev, 
+      string json, 
       Result<string> result)
     {
       if (String.IsNullOrEmpty(id))
@@ -123,7 +128,9 @@ namespace Chesterfield
     /// <param name="rev">Revision of the CouchDB document.</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public Result<string> DeleteDocument(string id, string rev, 
+    public Result<string> DeleteDocument(
+      string id, 
+      string rev, 
       Result<string> result)
     {
       if (String.IsNullOrEmpty(id))
@@ -226,8 +233,11 @@ namespace Chesterfield
     /// <param name="doc">Document object that contains the data.</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public Result<TDocument> CreateDocument<TDocument>(TDocument doc, 
-      Result<TDocument> result) where TDocument : class, ICouchDocument
+    public Result<TDocument> 
+      CreateDocument<TDocument>(
+        TDocument doc, 
+        Result<TDocument> result) 
+      where TDocument : class, ICouchDocument
     {
       if (doc == null)
         throw new ArgumentNullException("doc");
@@ -269,8 +279,11 @@ namespace Chesterfield
     /// <param name="doc">Document object that contains the data.</param>
     /// <param name="result"></param>
     /// <returns>Updated document.</returns>
-    public Result<TDocument> UpdateDocument<TDocument>(TDocument doc, 
-      Result<TDocument> result) where TDocument : class, ICouchDocument
+    public Result<TDocument> 
+      UpdateDocument<TDocument>(
+        TDocument doc, 
+        Result<TDocument> result) 
+      where TDocument : class, ICouchDocument
     {
       if (doc == null)
         throw new ArgumentNullException("doc");
@@ -317,8 +330,11 @@ namespace Chesterfield
     /// <param name="id">ID of the CouchDB document.</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public Result<TDocument> GetDocument<TDocument>(string id, 
-      Result<TDocument> result) where TDocument : ICouchDocument
+    public Result<TDocument> 
+      GetDocument<TDocument>(
+        string id, 
+        Result<TDocument> result) 
+      where TDocument : ICouchDocument
     {
       BasePlug
         .AtPath(XUri.EncodeFragment(id))
@@ -371,7 +387,8 @@ namespace Chesterfield
     /// <param name="doc">Document object that must be deleted.</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public Result<JObject> DeleteDocument(ICouchDocument doc, 
+    public Result<JObject> DeleteDocument(
+      ICouchDocument doc, 
       Result<JObject> result)
     {
       if (doc == null)

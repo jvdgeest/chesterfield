@@ -29,9 +29,14 @@ namespace Chesterfield
     /// <param name="contentType">Content type of the document.</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public Result<JObject> AddAttachment(string id, string rev, 
-      Stream attachment, long attachmentLength, string fileName, 
-      MimeType contentType, Result<JObject> result)
+    public Result<JObject> AddAttachment(
+      string id, 
+      string rev, 
+      Stream attachment, 
+      long attachmentLength, 
+      string fileName, 
+      MimeType contentType, 
+      Result<JObject> result)
     {
       if (String.IsNullOrEmpty(id))
         throw new ArgumentNullException("id");
@@ -79,8 +84,11 @@ namespace Chesterfield
     /// <param name="fileName">Filename of the attachment.</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public Result<JObject> DeleteAttachment(string id, string rev, 
-      string fileName, Result<JObject> result)
+    public Result<JObject> DeleteAttachment(
+      string id, 
+      string rev, 
+      string fileName, 
+      Result<JObject> result)
     {
       if (String.IsNullOrEmpty(id))
         throw new ArgumentNullException("id");
@@ -121,7 +129,10 @@ namespace Chesterfield
     /// <param name="fileName">Filename of the attachment.</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public Result<Stream> GetAttachment(string id, string rev, string fileName, 
+    public Result<Stream> GetAttachment(
+      string id, 
+      string rev, 
+      string fileName, 
       Result<Stream> result)
     {
       if (String.IsNullOrEmpty(id))
@@ -165,8 +176,12 @@ namespace Chesterfield
     /// <param name="fileName">Filename of the attachment.</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public Result<JObject> AddAttachment(string id, string rev, 
-      Stream attachment, long attachmentLength, string fileName,
+    public Result<JObject> AddAttachment(
+      string id, 
+      string rev, 
+      Stream attachment, 
+      long attachmentLength, 
+      string fileName,
       Result<JObject> result)
     {
       if (String.IsNullOrEmpty(fileName))
@@ -189,8 +204,11 @@ namespace Chesterfield
     /// <param name="fileName">Filename of the attachment.</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public Result<JObject> AddAttachment(string id, string rev, 
-      Stream attachment, string fileName, Result<JObject> result)
+    public Result<JObject> AddAttachment(string id, 
+      string rev, 
+      Stream attachment, 
+      string fileName, 
+      Result<JObject> result)
     {
       if (!attachment.CanSeek)
         throw new ArgumentException("Stream must be seekable");
@@ -212,8 +230,12 @@ namespace Chesterfield
     /// <param name="attachmentLength">Length of the attachment stream.</param>
     /// <param name="fileName">Filename of the attachment.</param>
     /// <param name="result"></param>  
-    public Result<JObject> AddAttachment(string id, Stream attachment, 
-      long attachmentLength, string filename, Result<JObject> result)
+    public Result<JObject> AddAttachment(
+      string id, 
+      Stream attachment, 
+      long attachmentLength, 
+      string filename, 
+      Result<JObject> result)
     {
       if (String.IsNullOrEmpty(id))
         throw new ArgumentNullException("id");
@@ -245,8 +267,11 @@ namespace Chesterfield
     /// will be closed once the request is sent.</param>
     /// <param name="fileName">Filename of the attachment.</param>
     /// <param name="result"></param>  
-    public Result<JObject> AddAttachment(string id, Stream attachment, 
-      string filename, Result<JObject> result)
+    public Result<JObject> AddAttachment(
+      string id, 
+      Stream attachment, 
+      string filename, 
+      Result<JObject> result)
     {
       if (!attachment.CanSeek)
         throw new ArgumentException("Stream must be seekable");
@@ -265,7 +290,9 @@ namespace Chesterfield
     /// <param name="filePath">Path of the attachment to be added.</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public Result<JObject> AddAttachment(ICouchDocument doc, string filePath, 
+    public Result<JObject> AddAttachment(
+      ICouchDocument doc, 
+      string filePath, 
       Result<JObject> result)
     {
       if (doc == null)
@@ -288,7 +315,9 @@ namespace Chesterfield
     /// <param name="fileName">Filename of the attachment.</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public Result<Stream> GetAttachment(ICouchDocument doc, string fileName, 
+    public Result<Stream> GetAttachment(
+      ICouchDocument doc, 
+      string fileName, 
       Result<Stream> result)
     {
       if (doc == null)
@@ -306,7 +335,9 @@ namespace Chesterfield
     /// <param name="fileName">Filename of the attachment.</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public Result<Stream> GetAttachment(string id, string fileName, 
+    public Result<Stream> GetAttachment(
+      string id, 
+      string fileName, 
       Result<Stream> result)
     {
       GetDocument(id, new Result<CouchDocument>()).WhenDone(
@@ -325,7 +356,9 @@ namespace Chesterfield
     /// <param name="fileName">Filename of the attachment.</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public Result<JObject> DeleteAttachment(string id, string fileName, 
+    public Result<JObject> DeleteAttachment(
+      string id, 
+      string fileName, 
       Result<JObject> result)
     {
       GetDocument(id, new Result<CouchDocument>()).WhenDone(
@@ -344,7 +377,9 @@ namespace Chesterfield
     /// <param name="fileName">Filename of the attachment.</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public Result<JObject> DeleteAttachment(ICouchDocument doc, string fileName, 
+    public Result<JObject> DeleteAttachment(
+      ICouchDocument doc, 
+      string fileName, 
       Result<JObject> result)
     {
       if (doc == null)
@@ -372,8 +407,12 @@ namespace Chesterfield
     /// <param name="attachmentLength">Length of the attachment stream.</param>
     /// <param name="fileName">Filename of the attachment.</param>
     /// <returns></returns>
-    public JObject AddAttachment(string id, string rev, Stream attachment,
-      long attachmentLength, string fileName)
+    public JObject AddAttachment(
+      string id, 
+      string rev, 
+      Stream attachment,
+      long attachmentLength, 
+      string fileName)
     {
       return AddAttachment(id, rev, attachment, attachmentLength, fileName,
         new Result<JObject>()).Wait();
@@ -389,7 +428,10 @@ namespace Chesterfield
     /// the request is sent.</param>
     /// <param name="fileName">Filename of the attachment.</param>
     /// <returns></returns>
-    public JObject AddAttachment(string id, string rev, Stream attachment, 
+    public JObject AddAttachment(
+      string id, 
+      string rev, 
+      Stream attachment, 
       string fileName)
     {
       return AddAttachment(id, rev, attachment, attachment.Length, fileName, 
@@ -407,8 +449,11 @@ namespace Chesterfield
     /// <param name="attachmentLength">Length of the attachment stream.</param>
     /// <param name="fileName">Filename of the attachment.</param>
     /// <returns></returns>
-    public JObject AddAttachment(string id, Stream attachment, 
-      long attachmentLength, string fileName)
+    public JObject AddAttachment(
+      string id, 
+      Stream attachment,
+      long attachmentLength,
+      string fileName)
     {
       return AddAttachment(id, attachment, attachmentLength, fileName, 
         new Result<JObject>()).Wait();
@@ -424,7 +469,10 @@ namespace Chesterfield
     /// will be closed once the request is sent.</param>
     /// <param name="fileName">Filename of the attachment.</param>
     /// <returns></returns>
-    public JObject AddAttachment(string id, Stream attachment, string fileName)
+    public JObject AddAttachment(
+      string id, 
+      Stream attachment, 
+      string fileName)
     {
       return AddAttachment(id, attachment, fileName,
         new Result<JObject>()).Wait();
