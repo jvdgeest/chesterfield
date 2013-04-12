@@ -31,10 +31,10 @@ namespace Chesterfield.IntegrationTest
     {
       // Arrange
       client = new CouchClient(
-        aHost: ConfigurationManager.AppSettings["Host"],
-        aPort: Int32.Parse(ConfigurationManager.AppSettings["Port"]),
-        aUserName: ConfigurationManager.AppSettings["Username"],
-        aPassword: ConfigurationManager.AppSettings["Password"]
+        host: ConfigurationManager.AppSettings["Host"],
+        port: Int32.Parse(ConfigurationManager.AppSettings["Port"]),
+        username: ConfigurationManager.AppSettings["Username"],
+        password: ConfigurationManager.AppSettings["Password"]
       );
       DeleteDatabases();
 

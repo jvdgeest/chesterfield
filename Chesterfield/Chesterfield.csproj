@@ -78,6 +78,12 @@
     <Compile Include="Constants.cs" />
     <Compile Include="CouchAttachment.cs" />
     <Compile Include="CouchChanges.cs" />
+    <Compile Include="CouchClient.Databases.cs">
+      <DependentUpon>CouchClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CouchClient.Users.cs">
+      <DependentUpon>CouchClient.cs</DependentUpon>
+    </Compile>
     <Compile Include="CouchContinuousChanges.cs" />
     <Compile Include="CouchDatabase.AllDocuments.cs">
       <DependentUpon>CouchDatabase.cs</DependentUpon>

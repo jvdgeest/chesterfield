@@ -2,6 +2,7 @@
 {
   class Constants
   {
+    public const string _ALL_DBS = "_all_dbs";
     public const string _ALL_DOCS = "_all_docs";
     public const string _ATTACHMENTS = "_attachments";
     public const string _CHANGES = "_changes";
@@ -17,6 +18,7 @@
     public const string _REV = "_rev";
     public const string _TEMP_VIEW = "_temp_view";
     public const string _UPDATE = "_update";
+    public const string _USERS = "_users";
     public const string _VIEW = "_view";
     public const string CHANGES = "changes";
     public const string COMPACT_RUNNING = "compact_running";
