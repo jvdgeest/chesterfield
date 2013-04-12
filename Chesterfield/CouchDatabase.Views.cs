@@ -83,7 +83,7 @@ namespace Chesterfield
         throw new ArgumentNullException("result");
 
       BasePlug
-        .At(Constants.TEMP_VIEW)
+        .At(Constants._TEMP_VIEW)
         .With(options)
         .Post(DreamMessage.Ok(MimeType.JSON, JsonConvert.SerializeObject(view)), 
           new Result<DreamMessage>())
@@ -118,7 +118,7 @@ namespace Chesterfield
         throw new ArgumentNullException("result");
 
       BasePlug
-        .At(Constants.TEMP_VIEW)
+        .At(Constants._TEMP_VIEW)
         .With(options)
         .Post(DreamMessage.Ok(MimeType.JSON, JsonConvert.SerializeObject(view)), 
           new Result<DreamMessage>())
@@ -245,7 +245,7 @@ namespace Chesterfield
         throw new ArgumentNullException("result");
 
       BasePlug
-        .At(Constants.DESIGN, XUri.EncodeFragment(viewId), Constants.VIEW,
+        .At(Constants._DESIGN, XUri.EncodeFragment(viewId), Constants._VIEW,
           XUri.EncodeFragment(viewName))
         .With(options)
         .Get(new Result<DreamMessage>())

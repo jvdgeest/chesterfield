@@ -18,7 +18,7 @@ namespace Chesterfield
     [JsonProperty(Constants._REV)]
     public string Rev { get; set; }
 
-    [JsonProperty(Constants.ATTACHMENTS)]
+    [JsonProperty(Constants._ATTACHMENTS)]
     internal Dictionary<string, CouchAttachment> Attachments;
 
     [JsonIgnore]

@@ -78,7 +78,7 @@ namespace Chesterfield
         throw new ArgumentNullException("result");
 
       BasePlug
-        .At(Constants.COMPACT)
+        .At(Constants._COMPACT)
         .Post(DreamMessage.Ok(MimeType.JSON, String.Empty), 
           new Result<DreamMessage>())
         .WhenDone(
@@ -108,7 +108,7 @@ namespace Chesterfield
         throw new ArgumentNullException("result");
 
       BasePlug
-        .At(Constants.COMPACT)
+        .At(Constants._COMPACT)
         .At(XUri.EncodeFragment(designName))
         .Post(DreamMessage.Ok(MimeType.JSON, String.Empty), 
           new Result<DreamMessage>())
@@ -136,9 +136,9 @@ namespace Chesterfield
         throw new ArgumentNullException("result");
 
       BasePlug
-        .At(Constants.DESIGN)
+        .At(Constants._DESIGN)
         .At(XUri.EncodeFragment(designName))
-        .At(Constants.UPDATE)
+        .At(Constants._UPDATE)
         .At(XUri.EncodeFragment(functionName))
         .Post(new Result<DreamMessage>())
         .WhenDone(

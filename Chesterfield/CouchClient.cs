@@ -56,7 +56,7 @@ namespace Chesterfield
       if (aResult == null)
         throw new ArgumentNullException("aResult");
 
-      Plug p = BasePlug.At(Constants.REPLICATE);
+      Plug p = BasePlug.At(Constants._REPLICATE);
 
       string json = aReplicationOptions.ToString();
       p.Post(DreamMessage.Ok(MimeType.JSON, json), new Result<DreamMessage>()).WhenDone(
@@ -87,7 +87,7 @@ namespace Chesterfield
       if (aResult == null)
         throw new ArgumentNullException("aResult");
 
-      BasePlug.At(Constants.RESTART).Post(DreamMessage.Ok(MimeType.JSON, String.Empty), new Result<DreamMessage>()).WhenDone(
+      BasePlug.At(Constants._RESTART).Post(DreamMessage.Ok(MimeType.JSON, String.Empty), new Result<DreamMessage>()).WhenDone(
         a =>
         {
           if (a.Status == DreamStatus.Ok)
@@ -341,7 +341,7 @@ namespace Chesterfield
       if (aResult == null)
         throw new ArgumentNullException("aResult");
 
-      BasePlug.At(Constants.CONFIG).Get(DreamMessage.Ok(), new Result<DreamMessage>()).WhenDone(
+      BasePlug.At(Constants._CONFIG).Get(DreamMessage.Ok(), new Result<DreamMessage>()).WhenDone(
         a =>
         {
           if (a.Status == DreamStatus.Ok)
@@ -362,7 +362,7 @@ namespace Chesterfield
       if (String.IsNullOrEmpty(aSection))
         throw new ArgumentException("Section cannot be empty");
 
-      BasePlug.At(Constants.CONFIG, XUri.EncodeFragment(aSection)).Get(DreamMessage.Ok(), new Result<DreamMessage>()).WhenDone(
+      BasePlug.At(Constants._CONFIG, XUri.EncodeFragment(aSection)).Get(DreamMessage.Ok(), new Result<DreamMessage>()).WhenDone(
         a =>
         {
           switch (a.Status)
@@ -392,7 +392,7 @@ namespace Chesterfield
         throw new ArgumentNullException("aResult");
 
 
-      BasePlug.At(Constants.CONFIG, XUri.EncodeFragment(aSection), XUri.EncodeFragment(aKeyName)).Get(DreamMessage.Ok(), new Result<DreamMessage>()).WhenDone(
+      BasePlug.At(Constants._CONFIG, XUri.EncodeFragment(aSection), XUri.EncodeFragment(aKeyName)).Get(DreamMessage.Ok(), new Result<DreamMessage>()).WhenDone(
         a =>
         {
           string value = a.ToText();
@@ -425,7 +425,7 @@ namespace Chesterfield
       if (aValue == null)
         return DeleteConfigValue(aSection, aKeyName, aResult);
 
-      BasePlug.At(Constants.CONFIG, XUri.EncodeFragment(aSection), XUri.EncodeFragment(aKeyName)).Put(DreamMessage.Ok(MimeType.TEXT, "\"" + aValue + "\""), new Result<DreamMessage>()).WhenDone(
+      BasePlug.At(Constants._CONFIG, XUri.EncodeFragment(aSection), XUri.EncodeFragment(aKeyName)).Put(DreamMessage.Ok(MimeType.TEXT, "\"" + aValue + "\""), new Result<DreamMessage>()).WhenDone(
         a =>
         {
           if (a.Status == DreamStatus.Ok)
@@ -446,7 +446,7 @@ namespace Chesterfield
       if (aResult == null)
         throw new ArgumentNullException("aResult");
 
-      BasePlug.At(Constants.CONFIG, XUri.EncodeFragment(aSection), XUri.EncodeFragment(aKeyName)).Delete(DreamMessage.Ok(), new Result<DreamMessage>()).WhenDone(
+      BasePlug.At(Constants._CONFIG, XUri.EncodeFragment(aSection), XUri.EncodeFragment(aKeyName)).Delete(DreamMessage.Ok(), new Result<DreamMessage>()).WhenDone(
         a =>
         {
           if (a.Status == DreamStatus.Ok)

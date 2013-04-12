@@ -42,12 +42,12 @@ namespace Chesterfield
 
     public bool HasAttachment
     {
-      get { return this[Constants.ATTACHMENTS] != null; }
+      get { return this[Constants._ATTACHMENTS] != null; }
     }
 
     public IEnumerable<string> GetAttachmentNames()
     {
-      var attachment = this[Constants.ATTACHMENTS];
+      var attachment = this[Constants._ATTACHMENTS];
       return attachment == null ? null : attachment.Select(x => x.Value<JProperty>().Name);
     }
   }

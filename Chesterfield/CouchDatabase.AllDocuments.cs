@@ -27,7 +27,7 @@ namespace Chesterfield
         throw new ArgumentNullException("result");
 
       BasePlug
-        .At(Constants.ALL_DOCS)
+        .At(Constants._ALL_DOCS)
         .With(viewOptions)
         .Get(new Result<DreamMessage>())
         .WhenDone(
@@ -62,7 +62,7 @@ namespace Chesterfield
         throw new ArgumentNullException("result");
 
       BasePlug
-        .At(Constants.ALL_DOCS)
+        .At(Constants._ALL_DOCS)
         .With(Constants.INCLUDE_DOCS, true)
         .With(viewOptions).Get(new Result<DreamMessage>())
         .WhenDone(

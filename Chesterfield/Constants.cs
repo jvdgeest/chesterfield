@@ -5,6 +5,23 @@
     public const string LOCALHOST = "localhost";
     public const int DEFAULT_PORT = 5984;
 
+    public const string _ID = "_id";
+    public const string _REV = "_rev";
+    public const string _ALL_DOCS = "_all_docs";
+    public const string _DESIGN = "_design";
+    public const string _VIEW = "_view";
+    public const string _UPDATE = "_update";
+    public const string _ATTACHMENTS = "_attachments";
+    public const string _CONFIG = "_config";
+    public const string _COMPACT = "_compact";
+    public const string _TEMP_VIEW = "_temp_view";
+    public const string _RESTART = "_restart";
+    public const string _CHANGES = "_changes";
+    public const string _REPLICATE = "_replicate";
+    public const string _REPLICATION_ID = "_replication_id";
+    public const string _REPLICATION_STATE = "_replication_state";
+    public const string _REPLICATION_STATE_TIME = "_replication_state_time";
+
     public const string COMPACT_RUNNING = "compact_running";
     public const string DB_NAME = "db_name";
     public const string DISK_FORMAT_VERSION = "disk_format_version";
@@ -21,27 +38,14 @@
     public const string DATA = "data";
     public const string DIGEST = "digest";
 
-    public const string REPLICATE = "_replicate";
-    public const string CONFIG = "_config";
-
-    public const string _REV = "_rev";
-    public const string REV = "rev";
-
-    public const string _ID = "_id";
     public const string ID = "id";
-
-    public const string ALL_DOCS = "_all_docs";
-    public const string DESIGN = "_design";
-    public const string VIEW = "_view";
-    public const string UPDATE = "_update";
+    public const string REV = "rev";
     public const string VIEW_PARAMETER = "view";
-
     public const string TYPE = "type";
     public const string NAME = "name";
     public const string ROLES = "roles";
     public const string TYPE_USER = "user";
 
-    public const string ATTACHMENTS ="_attachments";
     public const string JAVASCRIPT = "javascript";
     public const string LANGUAGE = "language";
     public const string VIEWS = "views";
@@ -80,11 +84,6 @@
     public const string OFFSET = "offset";
     public const string ROWS = "rows";
 
-    public const string COMPACT = "_compact";
-    public const string TEMP_VIEW = "_temp_view";
-    public const string RESTART = "_restart";
-
-    public const string _CHANGES = "_changes";
     public const string CHANGES = "changes";
     public const string DELETED = "deleted";
     public const string FEED = "feed";
@@ -98,9 +97,5 @@
     public const string HEARTBEAT = "heartbeat";
     public const string SINCE = "since";
     public const string TIMEOUT = "timeout";
-
-    public const string REPLICATION_ID = "_replication_id";
-    public const string REPLICATION_STATE = "_replication_state";
-    public const string REPLICATION_STATE_TIME = "_replication_state_time";
   }
 }

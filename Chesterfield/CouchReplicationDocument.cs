@@ -44,13 +44,13 @@ namespace Chesterfield
     [JsonProperty(Constants.DOC_IDS)]
     public string[] DocIds { get; set; }
 
-    [JsonProperty(Constants.REPLICATION_ID)]
+    [JsonProperty(Constants._REPLICATION_ID)]
     public string ReplicationId { get; internal set; }
 
-    [JsonProperty(Constants.REPLICATION_STATE)]
+    [JsonProperty(Constants._REPLICATION_STATE)]
     public string ReplicationState { get; internal set; }
 
-    [JsonProperty(Constants.REPLICATION_STATE_TIME)]
+    [JsonProperty(Constants._REPLICATION_STATE_TIME)]
     public DateTimeOffset? ReplicationStateTime { get; internal set; }
   }
 }

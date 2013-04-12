@@ -80,7 +80,7 @@ namespace Chesterfield.Support
         plug = plug.With(Constants.FILTER, XUri.Encode(changeOptions.Filter));
       if (!String.IsNullOrEmpty(changeOptions.View))
       {
-        plug = plug.With(Constants.FILTER, XUri.Encode(Constants.VIEW));
+        plug = plug.With(Constants.FILTER, XUri.Encode(Constants._VIEW));
         plug = plug.With(Constants.VIEW_PARAMETER, changeOptions.View);
       }
       if (changeOptions.Heartbeat.HasValue)

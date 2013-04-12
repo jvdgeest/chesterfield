@@ -17,7 +17,7 @@ namespace Chesterfield
     public CouchDesignDocument(string aDesignDocId)
       : this()
     {
-      Id = string.Format("{0}/{1}", Constants.DESIGN, aDesignDocId);
+      Id = string.Format("{0}/{1}", Constants._DESIGN, aDesignDocId);
     }
 
     [JsonProperty(Constants.LANGUAGE)]
