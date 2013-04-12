@@ -42,7 +42,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="mindtouch.dream">
+    <Reference Include="mindtouch.dream, Version=2.4.0.367, Culture=neutral, PublicKeyToken=b17e0197b56911d2, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libraries\mindtouch.dream.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
