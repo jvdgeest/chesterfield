@@ -11,8 +11,8 @@ namespace Chesterfield
     /// <summary>
     /// Creates an administrator.
     /// </summary>
-    /// <param name="username">Username of the administrator.</param>
-    /// <param name="password">Plain text password.</param>
+    /// <param name="username">The username of the administrator.</param>
+    /// <param name="password">A plain text password.</param>
     public void CreateAdminUser(string username, string password)
     {
       if (String.IsNullOrEmpty(username))
@@ -37,7 +37,7 @@ namespace Chesterfield
     /// <summary>
     /// Deletes an administrator.
     /// </summary>
-    /// <param name="username">Username of the administrator.</param>
+    /// <param name="username">The username of the administrator.</param>
     public void DeleteAdminUser(string username)
     {
       if (String.IsNullOrEmpty(username))
@@ -56,7 +56,7 @@ namespace Chesterfield
     /// <summary>
     /// Retrieves a user.
     /// </summary>
-    /// <param name="username">Username.</param>
+    /// <param name="username">The username.</param>
     /// <returns></returns>
     public JDocument GetUser(string username)
     {
@@ -70,7 +70,7 @@ namespace Chesterfield
     /// <summary>
     /// Determines if a user exists.
     /// </summary>
-    /// <param name="username">Username.</param>
+    /// <param name="username">The username.</param>
     /// <returns>Boolean indicating whether the user exists.</returns>
     public bool HasUser(string username)
     {
@@ -83,7 +83,7 @@ namespace Chesterfield
     /// <summary>
     /// Generates a CouchDB document ID for a given username.
     /// </summary>
-    /// <param name="username">Username.</param>
+    /// <param name="username">The Username.</param>
     /// <returns>CouchDB document ID.</returns>
     private string UserId(string username)
     {

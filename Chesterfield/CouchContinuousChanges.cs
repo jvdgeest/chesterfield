@@ -5,27 +5,36 @@ using Chesterfield.Support;
 
 namespace Chesterfield
 {
-  public delegate void CouchChangeDelegate(object aSender, CouchChangeResult aResult);
-  public delegate void CouchChangeDelegate<T>(object aSender, CouchChangeResult<T> aResult) where T : ICouchDocument;
+  public delegate void CouchChangeDelegate(
+    object aSender, 
+    CouchChangeResult aResult);
+
+  public delegate void CouchChangeDelegate<T>(
+      object aSender, 
+      CouchChangeResult<T> aResult) 
+    where T : ICouchDocument;
 
   public class CouchContinuousChanges : IDisposable
   {
     private readonly AsyncStreamReader theReader;
-    private readonly ObjectSerializer<CouchChangeResult> theSerializer = new ObjectSerializer<CouchChangeResult>();
+    private readonly ObjectSerializer<CouchChangeResult> theSerializer = 
+      new ObjectSerializer<CouchChangeResult>();
 
-    internal CouchContinuousChanges(DreamMessage aMessage, CouchChangeDelegate aCallback)
+    internal CouchContinuousChanges(
+      DreamMessage message, 
+      CouchChangeDelegate callback)
     {
-      if (aMessage == null)
-        throw new ArgumentNullException("aMessage");
-      if (aCallback == null)
-        throw new ArgumentNullException("aCallback");
+      if (message == null)
+        throw new ArgumentNullException("message");
+      if (callback == null)
+        throw new ArgumentNullException("callback");
 
-      theReader = new AsyncStreamReader(aMessage.ToStream(), (x, y) =>
+      theReader = new AsyncStreamReader(message.ToStream(), (x, y) =>
       {
         if (!String.IsNullOrEmpty(y.Line))
         {
           CouchChangeResult result = theSerializer.Deserialize(y.Line);
-          aCallback(this, result);
+          callback(this, result);
         }
       });
     }
@@ -39,21 +48,24 @@ namespace Chesterfield
   public class CouchContinuousChanges<T> : IDisposable where T : ICouchDocument
   {
     private readonly AsyncStreamReader theReader;
-    private readonly ObjectSerializer<CouchChangeResult<T>> theSerializer = new ObjectSerializer<CouchChangeResult<T>>();
+    private readonly ObjectSerializer<CouchChangeResult<T>> theSerializer = 
+      new ObjectSerializer<CouchChangeResult<T>>();
 
-    internal CouchContinuousChanges(DreamMessage aMessage, CouchChangeDelegate<T> aCallback)
+    internal CouchContinuousChanges(
+      DreamMessage message, 
+      CouchChangeDelegate<T> callback)
     {
-      if (aMessage == null)
-        throw new ArgumentNullException("aMessage");
-      if (aCallback == null)
-        throw new ArgumentNullException("aCallback");
+      if (message == null)
+        throw new ArgumentNullException("message");
+      if (callback == null)
+        throw new ArgumentNullException("callback");
 
-      theReader = new AsyncStreamReader(aMessage.ToStream(), (x, y) =>
+      theReader = new AsyncStreamReader(message.ToStream(), (x, y) =>
       {
         if (!String.IsNullOrEmpty(y.Line))
         {
           CouchChangeResult<T> result = theSerializer.Deserialize(y.Line);
-          aCallback(this, result);
+          callback(this, result);
         }
       });
     }
