@@ -37,10 +37,10 @@ namespace Chesterfield
      * =======================================================================*/
 
     /// <summary>
-    /// Retrieves information about the CouchDB database, such as the disk size
-    /// and document count. See CouchDatabaseInfo for more information.
-    /// <para>&#160;</para>
-    /// This method is asynchronous.
+    /// <para>Retrieves information about the CouchDB database, such as the disk
+    /// size and document count. See CouchDatabaseInfo for more information.
+    /// </para>
+    /// <para>This method is asynchronous.</para>
     /// </summary>
     /// <param name="result"></param>
     /// <returns></returns>
@@ -66,9 +66,8 @@ namespace Chesterfield
     }
 
     /// <summary>
-    /// Compacts the database.
-    /// <para>&#160;</para>
-    /// This method is asynchronous.
+    /// <para>Compacts the database.</para>
+    /// <para>This method is asynchronous.</para>
     /// </summary>
     /// <param name="result"></param>
     /// <returns></returns>
@@ -95,9 +94,8 @@ namespace Chesterfield
     }
 
     /// <summary>
-    /// Compacts a design document.
-    /// <para>&#160;</para>
-    /// This method is asynchronous.
+    /// <para>Compacts a design document.</para>
+    /// <para>This method is asynchronous.</para>
     /// </summary>
     /// <param name="designName">Name of the design document to compact.</param>
     /// <param name="result"></param>
