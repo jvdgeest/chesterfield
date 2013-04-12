@@ -11,7 +11,8 @@
     TValue Value { get; }
   }
 
-  public interface IViewResultRow<TKey, TValue, TDocument> : IViewResultRow<TKey, TValue> where TDocument : ICouchDocument
+  public interface IViewResultRow<TKey, TValue, TDocument> : 
+    IViewResultRow<TKey, TValue> where TDocument : ICouchDocument
   {
     TDocument Doc { get; }
   }

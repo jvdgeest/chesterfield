@@ -3,11 +3,10 @@
   public interface IAuditableDocument
   {
     void Creating();
-    void Updating();
-    void Deleting();
-
     void Created();
+    void Updating();
     void Updated();
+    void Deleting();
     void Deleted();
   }
 }

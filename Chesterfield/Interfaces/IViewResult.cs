@@ -16,7 +16,8 @@ namespace Chesterfield.Interfaces
     IEnumerable<ViewResultRow<TKey, TValue>> Rows { get; }
   }
 
-  public interface IViewResult<TKey, TValue, TDocument> : IBaseViewResult where TDocument : ICouchDocument
+  public interface IViewResult<TKey, TValue, TDocument> : IBaseViewResult 
+    where TDocument : ICouchDocument
   {
     IEnumerable<ViewResultRow<TKey, TValue, TDocument>> Rows { get; }
   }

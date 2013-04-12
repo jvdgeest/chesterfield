@@ -1,10 +1,8 @@
 using System;
-using System.IO;
 using MindTouch.Dream;
 using MindTouch.Tasking;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Chesterfield.Interfaces;
 using Chesterfield.Support;
 
 namespace Chesterfield

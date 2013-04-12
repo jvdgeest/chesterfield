@@ -1,8 +1,9 @@
-﻿using MindTouch.Dream;
+﻿using System;
+using MindTouch.Dream;
 
 namespace Chesterfield.Interfaces
 {
-  public interface IListResult : System.IEquatable<IListResult>
+  public interface IListResult : IEquatable<IListResult>
   {
     DreamStatus StatusCode { get; }
     string Etag { get; }
