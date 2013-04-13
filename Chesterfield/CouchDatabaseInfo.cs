@@ -9,7 +9,7 @@ namespace Chesterfield
       new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
     /// <summary>
-    /// Indicates, if a compaction is running.
+    /// Indicates if a compaction is running.
     /// </summary>
     [JsonProperty(Constants.COMPACT_RUNNING)]
     public bool CompactRunning { get; private set; }
