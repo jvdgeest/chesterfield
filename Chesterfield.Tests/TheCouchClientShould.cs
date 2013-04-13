@@ -94,7 +94,8 @@ namespace Chesterfield.IntegrationTest
       Assert.AreEqual(0, couchDatabaseInfo.DocCount);
       Assert.AreEqual(0, couchDatabaseInfo.DocDeletedCount);
       Assert.AreNotEqual(0, couchDatabaseInfo.InstanceStartTimeMs);
-      Assert.AreNotEqual(DateTime.MinValue, couchDatabaseInfo.InstanceStartTime);
+      Assert.AreNotEqual(DateTime.MinValue, 
+        couchDatabaseInfo.InstanceStartTime);
     }
 
     [TestMethod]
@@ -170,7 +171,8 @@ namespace Chesterfield.IntegrationTest
       db.CreateDocument(id, "{}", new Result<string>()).Wait();
 
       // Act
-      using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes("This is a text document")))
+      using (MemoryStream ms = new MemoryStream(
+        Encoding.UTF8.GetBytes("This is a text document")))
       {
         db.AddAttachment(id, ms, "test.txt");
       }
@@ -202,7 +204,8 @@ namespace Chesterfield.IntegrationTest
       db.CreateDocument(id, "{}", new Result<string>()).Wait();
 
       // Act
-      using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes("This is a text document")))
+      using (MemoryStream ms = new MemoryStream(
+        Encoding.UTF8.GetBytes("This is a text document")))
       {
         db.AddAttachment(id, ms, "test.txt");
       }
@@ -217,10 +220,12 @@ namespace Chesterfield.IntegrationTest
     {
       // Arrange
       CouchDatabase db = client.GetDatabase(baseDatabase);
-      db.CreateDocument(@"{""_id"":""test_upload""}", new Result<string>()).Wait();
+      db.CreateDocument(@"{""_id"":""test_upload""}", 
+        new Result<string>()).Wait();
       var doc = db.GetDocument<CouchDocument>("test_upload");
       var attachment = Encoding.UTF8.GetBytes("test");
-      using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes("This is a text document")))
+      using (MemoryStream ms = new MemoryStream(
+        Encoding.UTF8.GetBytes("This is a text document")))
       {
         db.AddAttachment("test_upload", ms, "test_upload.txt");
       }
@@ -244,9 +249,11 @@ namespace Chesterfield.IntegrationTest
     {
       // Arrange
       CouchDatabase db = client.GetDatabase(baseDatabase);
-      db.CreateDocument(@"{""_id"":""test_delete""}", new Result<string>()).Wait();
+      db.CreateDocument(@"{""_id"":""test_delete""}", 
+        new Result<string>()).Wait();
       db.GetDocument<CouchDocument>("test_delete");
-      using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes("This is a text document")))
+      using (MemoryStream ms = new MemoryStream(
+        Encoding.UTF8.GetBytes("This is a text document")))
       {
         db.AddAttachment("test_delete", ms, "test_upload.txt");
       }
@@ -269,7 +276,8 @@ namespace Chesterfield.IntegrationTest
 
       // Act
       var attachment = Encoding.UTF8.GetBytes("test");
-      using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes("This is a text document")))
+      using (MemoryStream ms = new MemoryStream(
+        Encoding.UTF8.GetBytes("This is a text document")))
       {
         db.AddAttachment(tsc.Id, ms, "test_upload.txt");
       }
@@ -540,24 +548,26 @@ namespace Chesterfield.IntegrationTest
       string id = null;
 
       // Act
-      using (CouchContinuousChanges<JDocument> ccc = db.GetCoutinuousChanges<JDocument>(
-        new ChangeOptions() { Since = 0 }, (x, y) =>
-        {
-          try
-          {
-            id = y.Doc.Id;
+      using (CouchContinuousChanges<JDocument> ccc =
+        db.GetCoutinuousChanges<JDocument>(new ChangeOptions() { Since = 0 }, 
+          (x, y) => {
+            try
+            {
+              id = y.Doc.Id;
 
-            // Assert
-            Assert.IsNotNull(y.Doc);
-            Assert.IsNotNull(y.Id);
-            Assert.IsTrue(y.Sequence > 0);
-          }
-          finally
-          {
-            evt.Set();
-          }
-        }, new Result<CouchContinuousChanges<JDocument>>()).Wait())
-      {
+              // Assert
+              Assert.IsNotNull(y.Doc);
+              Assert.IsNotNull(y.Id);
+              Assert.IsTrue(y.Sequence > 0);
+            }
+            finally
+            {
+              evt.Set();
+            }
+          },
+          new Result<CouchContinuousChanges<JDocument>>()
+        ).Wait()
+      ) {
         JDocument result = db.CreateDocument(new JDocument(),
           new Result<JDocument>()).Wait();
         evt.WaitOne();

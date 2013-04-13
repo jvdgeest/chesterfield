@@ -71,7 +71,7 @@ namespace Chesterfield
     /// values.
     /// </summary>
     [JsonProperty(Constants.UPDATES)]
-    public Dictionary<string, string> Updates { get; private set; }
+    public Dictionary<string, string> Updates { get; set; }
 
     /// <summary>
     /// This function can be used to prevent invalid or unauthorized document 

@@ -6,12 +6,12 @@ using Chesterfield.Support;
 namespace Chesterfield
 {
   public delegate void CouchChangeDelegate(
-    object aSender, 
-    CouchChangeResult aResult);
+    object sender, 
+    CouchChangeResult result);
 
   public delegate void CouchChangeDelegate<T>(
-      object aSender, 
-      CouchChangeResult<T> aResult) 
+      object sender, 
+      CouchChangeResult<T> result) 
     where T : ICouchDocument;
 
   public class CouchContinuousChanges : IDisposable

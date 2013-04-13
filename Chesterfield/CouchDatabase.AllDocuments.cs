@@ -13,9 +13,9 @@ namespace Chesterfield
      * =======================================================================*/
 
     public Result<ViewResult<TKey, TValue>> GetAllDocuments<TKey, TValue>(
-      Result<ViewResult<TKey, TValue>> aResult)
+      Result<ViewResult<TKey, TValue>> result)
     {
-      return GetAllDocuments(new ViewOptions(), aResult);
+      return GetAllDocuments(new ViewOptions(), result);
     }
 
     public Result<ViewResult<TKey, TValue>> GetAllDocuments<TKey, TValue>(
