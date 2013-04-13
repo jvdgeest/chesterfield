@@ -6,13 +6,13 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <licenseUrl>https://github.com/vdaron/DreamSeat/blob/master/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/vdaron/DreamSeat</projectUrl>
+    <licenseUrl>https://github.com/jvdgeest/chesterfield/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/jvdgeest/chesterfield</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>First nuget package.</releaseNotes>
-    <copyright>Copyright © Martin Murphy - Vincent Daron 2010-2012</copyright>
-    <tags>Apache CouchDb Dream Mindtouch Asynchronous</tags>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright © 2010-2013 Martin Murphy, Vincent Daron, Johan van der Geest</copyright>
+    <tags>Apache CouchDB Dream Mindtouch Asynchronous</tags>
   </metadata>
   <files>
     <file src="..\Libraries\mindtouch.dream.dll" target="lib/net40" /> 
