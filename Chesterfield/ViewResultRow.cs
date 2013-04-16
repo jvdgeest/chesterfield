@@ -42,6 +42,9 @@ namespace Chesterfield
     ViewResultRow<TKey>,
     IViewResultRow<TKey, TValue>
   {
+    /// <summary>
+    /// The value that is assigned by the view's map function (can be null).
+    /// </summary>
     [JsonProperty(Constants.VALUE)]
     public TValue Value
     {
@@ -64,6 +67,9 @@ namespace Chesterfield
     IViewResultRow<TKey, TValue, TDocument>
     where TDocument : ICouchDocument
   {
+    /// <summary>
+    /// The CouchDB document that belongs to the view row.
+    /// </summary>
     [JsonProperty(Constants.DOC)]
     public TDocument Doc
     {
