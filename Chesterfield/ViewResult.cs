@@ -58,7 +58,8 @@ namespace Chesterfield
     IViewResult<TKey, TValue>
   {
     /// <summary>
-    /// List of ViewResultRow objects containing the keys and values.
+    /// List of ViewResultRow objects containing the CouchDB document ID's, keys 
+    /// and values.
     /// </summary>
     [JsonProperty(Constants.ROWS)]
     public IEnumerable<ViewResultRow<TKey, TValue>> Rows
@@ -83,7 +84,8 @@ namespace Chesterfield
     IViewResult<TKey, TValue, TDocument> where TDocument : ICouchDocument
   {
     /// <summary>
-    /// List of ViewResultRow objects containing the keys, values and documents.
+    /// List of ViewResultRow objects containing the CouchDB document ID's, 
+    /// keys, values and CouchDB documents.
     /// </summary>
     [JsonProperty(Constants.ROWS)]
     public IEnumerable<ViewResultRow<TKey, TValue, TDocument>> Rows
