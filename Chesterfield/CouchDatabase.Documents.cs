@@ -160,11 +160,11 @@ namespace Chesterfield
     /// <param name="id">ID of the CouchDB document.</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public Result<string> GetDocument(string id, Result<string> aResult)
+    public Result<string> GetDocument(string id, Result<string> result)
     {
       if (String.IsNullOrEmpty(id))
         throw new ArgumentNullException("id");
-      if (aResult == null)
+      if (result == null)
         throw new ArgumentNullException("result");
 
       BasePlug
@@ -176,19 +176,19 @@ namespace Chesterfield
             switch (a.Status)
             {
               case DreamStatus.Ok:
-                aResult.Return(a.ToText());
+                result.Return(a.ToText());
                 break;
               case DreamStatus.NotFound:
-                aResult.Return((string)null);
+                result.Return((string)null);
                 break;
               default:
-                aResult.Throw(new CouchException(a));
+                result.Throw(new CouchException(a));
                 break;
             }
           },
-          aResult.Throw
+          result.Throw
         );
-      return aResult;
+      return result;
     }
 
     /// <summary>
