@@ -9,87 +9,110 @@ namespace Chesterfield
 {
   internal class JsonDocumentConverter : JsonConverter
   {
-    public override bool CanConvert(Type aType)
+    public override bool CanConvert(Type type)
     {
-      if (aType == null)
-        throw new ArgumentNullException("aType");
+      if (type == null)
+        throw new ArgumentNullException("type");
 
-      return (aType == typeof(JDocument)) || (aType.IsSubclassOf(typeof(JDocument)));
+      return (type == typeof(JDocument)) || 
+             (type.IsSubclassOf(typeof(JDocument)));
     }
 
-    public override object ReadJson(JsonReader aReader, Type aType, object existingValue, JsonSerializer serializer)
+    public override object ReadJson(
+      JsonReader reader, 
+      Type type, 
+      object existingValue, 
+      JsonSerializer serializer)
     {
-      if (aReader == null)
-        throw new ArgumentNullException("aReader");
-      if (aType == null)
-        throw new ArgumentNullException("aType");
+      if (reader == null)
+        throw new ArgumentNullException("reader");
+      if (type == null)
+        throw new ArgumentNullException("type");
 
-      return aType == typeof(JDocument) ? new JDocument(JObject.Load(aReader)) : Activator.CreateInstance(aType, JObject.Load(aReader));
+      return type == typeof(JDocument) 
+        ? new JDocument(JObject.Load(reader)) 
+        : Activator.CreateInstance(type, JObject.Load(reader));
     }
 
-    public override void WriteJson(JsonWriter aWriter, object aValue, JsonSerializer aSerializer)
+    public override void WriteJson(
+      JsonWriter writer, 
+      object value, 
+      JsonSerializer serializer)
     {
-      if (aWriter == null)
-        throw new ArgumentNullException("aWriter");
-      if (aValue == null)
-        throw new ArgumentNullException("aValue");
+      if (writer == null)
+        throw new ArgumentNullException("writer");
+      if (value == null)
+        throw new ArgumentNullException("value");
 
-      ((JDocument)aValue).WriteTo(aWriter);
+      ((JDocument)value).WriteTo(writer);
     }
   }
 
   internal class JObjectConverter : JsonConverter
   {
-    public override bool CanConvert(Type aType)
+    public override bool CanConvert(Type type)
     {
-      return aType == typeof(JObject);
-    }
-    public override object ReadJson(JsonReader aReader, Type aType, object existingValue, JsonSerializer serializer)
-    {
-      if (aReader == null)
-        throw new ArgumentNullException("aReader");
-      if (aType == null)
-        throw new ArgumentNullException("aType");
-      return JObject.Load(aReader);
+      return type == typeof(JObject);
     }
 
-    public override void WriteJson(JsonWriter aWriter, object aValue, JsonSerializer aSerializer)
+    public override object ReadJson(
+      JsonReader reader, 
+      Type type, 
+      object existingValue, 
+      JsonSerializer serializer)
     {
-      if (aWriter == null)
-        throw new ArgumentNullException("aWriter");
-      if (aValue == null)
-        throw new ArgumentNullException("aValue");
-      ((JObject)aValue).WriteTo(aWriter);
+      if (reader == null)
+        throw new ArgumentNullException("reader");
+      if (type == null)
+        throw new ArgumentNullException("type");
+      return JObject.Load(reader);
+    }
+
+    public override void WriteJson(
+      JsonWriter writer, 
+      object value, 
+      JsonSerializer serializer)
+    {
+      if (writer == null)
+        throw new ArgumentNullException("writer");
+      if (value == null)
+        throw new ArgumentNullException("value");
+      ((JObject)value).WriteTo(writer);
     }
   }
 
   internal interface IObjectSerializer<T>
   {
-    T Deserialize(string aJson);
-    string Serialize(T anObj);
+    T Deserialize(string json);
+    string Serialize(T obj);
   }
 
   internal class ObjectSerializer<T> : IObjectSerializer<T>
   {
-    private readonly JsonSerializerSettings theSettings;
+    private readonly JsonSerializerSettings settings;
 
     public ObjectSerializer()
     {
-      theSettings = new JsonSerializerSettings();
-      var converters = new List<JsonConverter> { new IsoDateTimeConverter(), new JsonDocumentConverter(), new JObjectConverter() };
-      theSettings.Converters = converters;
-      theSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-      theSettings.NullValueHandling = NullValueHandling.Ignore;
+      settings = new JsonSerializerSettings
+      {
+        Converters = new List<JsonConverter> { 
+          new IsoDateTimeConverter(), 
+          new JsonDocumentConverter(), 
+          new JObjectConverter() 
+        },
+        ContractResolver = new CamelCasePropertyNamesContractResolver(),
+        NullValueHandling = NullValueHandling.Ignore
+      };
     }
 
-    public virtual T Deserialize(string aJson)
+    public virtual T Deserialize(string json)
     {
-      return JsonConvert.DeserializeObject<T>(aJson, theSettings);
+      return JsonConvert.DeserializeObject<T>(json, settings);
     }
 
-    public virtual string Serialize(T anObj)
+    public virtual string Serialize(T obj)
     {
-      return JsonConvert.SerializeObject(anObj, Formatting.Indented, theSettings);
+      return JsonConvert.SerializeObject(obj, Formatting.Indented, settings);
     }
   }
 }
