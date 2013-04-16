@@ -65,6 +65,7 @@ namespace Chesterfield
         throw new ArgumentNullException("reader");
       if (type == null)
         throw new ArgumentNullException("type");
+
       return JObject.Load(reader);
     }
 
@@ -77,6 +78,7 @@ namespace Chesterfield
         throw new ArgumentNullException("writer");
       if (value == null)
         throw new ArgumentNullException("value");
+
       ((JObject)value).WriteTo(writer);
     }
   }
