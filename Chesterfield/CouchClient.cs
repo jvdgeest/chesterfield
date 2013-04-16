@@ -22,7 +22,7 @@ namespace Chesterfield
     /// </summary>
     /// <param name="host">The hostname of the CouchDB instance</param>
     /// <param name="port">The port of the CouchDB instance</param>
-    /// <param name="aUserName">The username of the CouchDB instance</param>
+    /// <param name="username">The username of the CouchDB instance</param>
     /// <param name="password">The password of the CouchDB instance</param>
     public CouchClient(
       string host = Constants.LOCALHOST,
