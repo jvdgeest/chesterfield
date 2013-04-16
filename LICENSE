@@ -1,8 +1,10 @@
-The MIT X11 License covers libraries in the LoveSeat project. 
-Some third party libraries come from different projects, and
-are licensed under their own terms.
+The MIT X11 License covers libraries in the LoveSeat, DreamSeat and 
+Chesterfield projects. Some third party libraries come from different 
+projects, andare licensed under their own terms.
 
 Copyright (c) 2010 Martin Murphy.
+Copyright (c) 2010-2012 Vincent Daron.
+Copyright (c) 2013 Johan van der Geest.
  
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
