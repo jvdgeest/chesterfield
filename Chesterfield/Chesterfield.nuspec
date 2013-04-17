@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package >
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>$id$</id>
     <version>$version$</version>
@@ -13,13 +13,13 @@
     <releaseNotes>Add Newtonsoft Json dependency.</releaseNotes>
     <copyright>Copyright (C) 2010-2013 Martin Murphy, Vincent Daron, Johan van der Geest</copyright>
     <tags>Apache CouchDB Dream Mindtouch Asynchronous</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="5.0.3" />
+    </dependencies>
   </metadata>
   <files>
     <file src="..\Libraries\mindtouch.dream.dll" target="lib/net40" /> 
 	<file src="..\Libraries\log4net.dll" target="lib/net40" /> 
 	<file src="..\Libraries\Autofac.dll" target="lib/net40" /> 
   </files>
-  <dependencies>
-    <dependency id="Newtonsoft.Json" version="5.0.3" />
-  </dependencies>
 </package>
