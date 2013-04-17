@@ -3,6 +3,10 @@ using Newtonsoft.Json;
 
 namespace Chesterfield
 {
+  /// <summary>
+  /// Represents a CouchDB database information response. Use the GetInfo method
+  /// of a CouchDatabase object to retrieve information of a database.
+  /// </summary>
   public class CouchDatabaseInfo
   {
     private static readonly DateTime Epoch = 
