@@ -10,8 +10,8 @@
     <projectUrl>https://github.com/jvdgeest/chesterfield</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes></releaseNotes>
-    <copyright>Copyright © 2010-2013 Martin Murphy, Vincent Daron, Johan van der Geest</copyright>
+    <releaseNotes>Add Newtonsoft Json dependency.</releaseNotes>
+    <copyright>Copyright (C) 2010-2013 Martin Murphy, Vincent Daron, Johan van der Geest</copyright>
     <tags>Apache CouchDB Dream Mindtouch Asynchronous</tags>
   </metadata>
   <files>
@@ -19,4 +19,7 @@
 	<file src="..\Libraries\log4net.dll" target="lib/net40" /> 
 	<file src="..\Libraries\Autofac.dll" target="lib/net40" /> 
   </files>
+  <dependencies>
+    <dependency id="Newtonsoft.Json" version="5.0.3" />
+  </dependencies>
 </package>
