@@ -5,8 +5,17 @@ using Chesterfield.Interfaces;
 
 namespace Chesterfield
 {
+  /// <summary>
+  /// Represents a CouchDB document. In its simplest form, a CouchDB document
+  /// has an ID and a revision. Override this class to add support for more 
+  /// fields. The CouchDatabase class can automatically serialize CouchDocument 
+  /// objects to JSON and deserialize them from JSON.
+  /// </summary>
   public class CouchDocument : ICouchDocument
   {
+    /// <summary>
+    /// Constructs a CouchDocument object.
+    /// </summary>
     public CouchDocument()
     {
       Attachments = new Dictionary<string, CouchAttachment>();
@@ -71,7 +80,7 @@ namespace Chesterfield
     }
 
     /// <summary>
-    /// Returns a hash code by using the ID and revision of this document.
+    /// Returns a hash code by based on the ID and revision of this document.
     /// </summary>
     /// <returns></returns>
     public override int GetHashCode()
