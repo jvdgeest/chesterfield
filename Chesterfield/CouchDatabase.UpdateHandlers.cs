@@ -21,15 +21,20 @@ namespace Chesterfield
     /// or update a CouchDB document.</para>
     /// <para>(This method is asynchronous.)</para>
     /// </summary>
+    /// <typeparam name="TResponse">Type of response to return, such as plain
+    /// HTML, JSON or a deserialized ICouchDocument (must inherit from
+    /// IUpdateResponse).</typeparam>
     /// <param name="designName">Name of the design document containing the 
     /// update handler.</param>
-    /// <param name="functionName">Name of the function to invoke.</param>
+    /// <param name="functionName">Name of the update handler function to 
+    /// invoke.</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public Result<JObject> UpdateHandle(
-      string designName,
-      string functionName,
-      Result<JObject> result)
+    public Result<TResponse> UpdateHandle<TResponse>(
+        string designName,
+        string functionName,
+        Result<TResponse> result)
+      where TResponse : class, IUpdateResponse
     {
       if (String.IsNullOrEmpty(designName))
         throw new ArgumentNullException("designName");
@@ -45,7 +50,12 @@ namespace Chesterfield
         .At(XUri.EncodeFragment(functionName))
         .Post(new Result<DreamMessage>())
         .WhenDone(
-          a => result.Return(JObject.Parse(a.ToText())),
+          a => {
+            TResponse response = Activator.CreateInstance<TResponse>();
+            response.Rev = a.Headers["X-Couch-Update-NewRev"];
+            response.HttpResponse = a.ToText();
+            result.Return(response);
+          }, 
           result.Throw
         );
       return result;
@@ -61,13 +71,21 @@ namespace Chesterfield
     /// update handlers to invoke server-side logic that will create or update a
     /// CouchDB document.
     /// </summary>
+    /// <typeparam name="TResponse">Type of response to return, such as plain
+    /// HTML, JSON or a deserialized ICouchDocument (must inherit from
+    /// IUpdateResponse).</typeparam>
     /// <param name="designName">Name of the design document containing the 
     /// update handler.</param>
-    /// <param name="functionName">Name of the function to invoke.</param>
-    /// <returns></returns>
-    public JObject UpdateHandle(string designName, string functionName)
+    /// <param name="functionName">Name of the update handler function to
+    /// invoke.</param>
+    /// <returns>Response of the update handler.</returns>
+    public TResponse UpdateHandle<TResponse>(
+        string designName, 
+        string functionName)
+      where TResponse : class, IUpdateResponse
     {
-      return GetView(designName, functionName, new Result<JObject>()).Wait();
+      return UpdateHandle<TResponse>(designName, functionName, 
+        new Result<TResponse>()).Wait();
     }
   }
 }

@@ -117,6 +117,7 @@
     <Compile Include="Interfaces\IAuditableDocument.cs" />
     <Compile Include="Interfaces\ICouchDocument.cs" />
     <Compile Include="Interfaces\IListResult.cs" />
+    <Compile Include="Interfaces\IUpdateResponse.cs" />
     <Compile Include="Interfaces\IViewOptions.cs" />
     <Compile Include="Interfaces\IViewResult.cs" />
     <Compile Include="Interfaces\IViewResultRow.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="Support\CouchDbConnectionStringBuilder.cs" />
     <Compile Include="Support\KeyOptions.cs" />
     <Compile Include="Support\PlugExtensions.cs" />
+    <Compile Include="UpdateResponse.cs" />
     <Compile Include="ViewOptions.cs" />
     <Compile Include="ViewResult.cs" />
     <Compile Include="ViewResultRow.cs" />
