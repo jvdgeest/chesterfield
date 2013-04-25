@@ -8,7 +8,7 @@ namespace Chesterfield.Tests
   public class TheCouchDbConnectionStringBuilderShould
   {
     [TestMethod]
-    public void ParseAConnectionString()
+    public void ParseConnectionString()
     {
       // Arrange
       CouchDbConnectionStringBuilder builder = 
