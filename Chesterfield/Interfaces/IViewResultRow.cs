@@ -26,6 +26,9 @@
   /// <typeparam name="TValue">The row value type.</typeparam>
   public interface IViewResultRow<TKey, TValue> : IViewResultRow<TKey>
   {
+    /// <summary>
+    /// The value that is assigned by the view's map function (can be null).
+    /// </summary>
     TValue Value { get; }
   }
 
