@@ -1,5 +1,12 @@
 ﻿namespace Chesterfield.Interfaces
 {
+  /// <summary>
+  /// Use this interface in combination with ICouchDocument to be able to
+  /// perform actions when a document is being created, updated or deleted, or
+  /// after a document has been created, updated or deleted. The CouchDatabase
+  /// class will check if a given ICouchDocument implements this interface and
+  /// then invoke the corresponding method(s) of this interface.
+  /// </summary>
   public interface IAuditableDocument
   {
     /// <summary>
