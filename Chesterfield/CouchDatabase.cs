@@ -13,6 +13,7 @@ namespace Chesterfield
    * > CouchDatabase.Attachments.cs
    * > CouchDatabase.Changes.cs
    * > CouchDatabase.Documents.cs
+   * > CouchDatabase.UpdateHandlers.cs
    * > CouchDatabase.Views.cs 
    */
   public partial class CouchDatabase : CouchBase
@@ -125,31 +126,6 @@ namespace Chesterfield
       return result;
     }
 
-    public Result<JObject> UpdateHandle(
-      string designName, 
-      string functionName, 
-      Result<JObject> result)
-    {
-      if (String.IsNullOrEmpty(designName))
-        throw new ArgumentNullException("designName");
-      if (String.IsNullOrEmpty(functionName))
-        throw new ArgumentNullException("functionName");
-      if (result == null)
-        throw new ArgumentNullException("result");
-
-      BasePlug
-        .At(Constants._DESIGN)
-        .At(XUri.EncodeFragment(designName))
-        .At(Constants._UPDATE)
-        .At(XUri.EncodeFragment(functionName))
-        .Post(new Result<DreamMessage>())
-        .WhenDone(
-          a => result.Return(JObject.Parse(a.ToText())),
-          result.Throw
-        );
-      return result;
-    }
-
     /* =========================================================================
      * Synchronous methods 
      * =======================================================================*/
@@ -179,11 +155,6 @@ namespace Chesterfield
     public void CompactDesignDocument(string designName)
     {
       CompactDesignDocument(designName, new Result()).Wait();
-    }
-
-    public JObject UpdateHandle(string designName, string functionName)
-    {
-      return GetView(designName, functionName, new Result<JObject>()).Wait();
     }
   }
 }

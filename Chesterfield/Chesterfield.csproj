@@ -101,6 +101,9 @@
     <Compile Include="CouchDatabase.Documents.cs">
       <DependentUpon>CouchDatabase.cs</DependentUpon>
     </Compile>
+    <Compile Include="CouchDatabase.UpdateHandlers.cs">
+      <DependentUpon>CouchDatabase.cs</DependentUpon>
+    </Compile>
     <Compile Include="CouchDatabase.Views.cs">
       <DependentUpon>CouchDatabase.cs</DependentUpon>
     </Compile>
