@@ -1,5 +1,9 @@
 ﻿namespace Chesterfield.Interfaces
 {
+  /// <summary>
+  /// Represents a CouchDB document. In it's simplest form, a CouchDB document
+  /// has an ID and a revision.
+  /// </summary>
   public interface ICouchDocument
   {
     /// <summary>
