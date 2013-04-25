@@ -51,10 +51,15 @@ namespace Chesterfield
         .Post(new Result<DreamMessage>())
         .WhenDone(
           a => {
-            TResponse response = Activator.CreateInstance<TResponse>();
-            response.Rev = a.Headers["X-Couch-Update-NewRev"];
-            response.HttpResponse = a.ToText();
-            result.Return(response);
+            if (a.Status == DreamStatus.Ok || a.Status == DreamStatus.Created)
+            {
+              TResponse response = Activator.CreateInstance<TResponse>();
+              response.Rev = a.Headers["X-Couch-Update-NewRev"];
+              response.HttpResponse = a.ToText();
+              result.Return(response);
+            }
+            else
+              result.Throw(new CouchException(a));
           }, 
           result.Throw
         );
