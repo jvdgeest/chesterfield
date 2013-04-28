@@ -100,7 +100,8 @@ namespace Chesterfield
 
       JObject jobj = JObject.Parse(json);
       BasePlug
-        .AtPath(XUri.EncodeFragment(id)).With(Constants.REV, rev)
+        .AtPath(XUri.EncodeFragment(id))
+        .With(Constants.REV, rev)
         .Put(DreamMessage.Ok(MimeType.JSON, jobj.ToString(Formatting.None)), 
           new Result<DreamMessage>())
         .WhenDone(
@@ -408,6 +409,17 @@ namespace Chesterfield
     /* =========================================================================
      * Synchronous methods 
      * =======================================================================*/
+
+    /// <summary>
+    /// Creates a document using the provided JSON. This method lets CouchDB 
+    /// generate the document ID for you.
+    /// </summary>
+    /// <param name="json">JSON data for creating the document.</param>
+    /// <returns></returns>
+    public string CreateDocument(string json)
+    {
+      return CreateDocument(null, json, new Result<string>()).Wait();
+    }
 
     /// <summary>
     /// Creates a document based on a type that inherits from the ICouchDocument
