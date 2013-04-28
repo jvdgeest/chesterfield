@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Chesterfield")]
-[assembly: AssemblyDescription("Chesterfield is a CouchDB client for the .NET platform. It is based on DreamSeat and LoveSeat.")]
+[assembly: AssemblyDescription("CouchDB API for .NET with asynchronous / synchronous support. This project is based on LoveSeat and DreamSeat and has as goal to extend the API support, improve the source code and provide better documentation.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Johan van der Geest")]
 [assembly: AssemblyProduct("Chesterfield")]
