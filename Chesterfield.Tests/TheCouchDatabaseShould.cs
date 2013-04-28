@@ -541,5 +541,40 @@ namespace Chesterfield.Tests
       Assert.IsNotNull(response.Response.TESTVAL);
       Assert.AreEqual("OK", response.Response.TESTVAL);
     }
+
+    [TestMethod]
+    public void RunUpdateHandlerWithDocumentId()
+    {
+      // Arrange
+      _db.CreateDocument(@"{""_id"":""test_id"", ""test"":""Works!""}");
+      CouchDesignDocument view = new CouchDesignDocument("design");
+      view.Updates["test"] = @"function(doc, req) { return [doc, doc.test]; }";
+      _db.CreateDocument(view);
+
+      // Act
+      UpdateHttpResponse response =
+        _db.UpdateHandle<UpdateHttpResponse>("design", "test", "test_id");
+
+      // Assert
+      Assert.AreEqual("Works!", response.HttpResponse);
+    }
+
+    [TestMethod]
+    public void RunUpdateHandlerWithRequestData()
+    {
+      // Arrange
+      CouchDesignDocument view = new CouchDesignDocument("design");
+      view.Updates["test"] = @"function(doc, req) { 
+        var data = JSON.parse(req.body);
+        return [null, data.test]; }";
+      _db.CreateDocument(view);
+
+      // Act
+      UpdateHttpResponse response = _db.UpdateHandle<UpdateHttpResponse>(
+        "design", "test", JObject.Parse(@"{""test"":""Works!""}"));
+
+      // Assert
+      Assert.AreEqual("Works!", response.HttpResponse);
+    }
   }
 }
