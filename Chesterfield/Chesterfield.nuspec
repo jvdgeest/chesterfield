@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/jvdgeest/chesterfield</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Add Newtonsoft Json dependency.</releaseNotes>
+    <releaseNotes>Added support for update handler functions and improved documentation.</releaseNotes>
     <copyright>Copyright (C) 2010-2013 Martin Murphy, Vincent Daron, Johan van der Geest</copyright>
     <tags>Apache CouchDB Dream Mindtouch Asynchronous</tags>
     <dependencies>
