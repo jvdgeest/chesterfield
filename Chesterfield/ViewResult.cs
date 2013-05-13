@@ -12,7 +12,10 @@ namespace Chesterfield
   public abstract class BaseViewResult : IBaseViewResult
   {
     /// <summary>
-    /// Total number of rows that are returned by the view.
+    /// Total number of rows that the view outputs without any filter
+    /// restrictions. For instance, this property can return 1, even when there
+    /// are zero elements in Rows. This will be due to key filter(s) you have
+    /// applied.
     /// </summary>
     [JsonProperty(Constants.TOTAL_ROWS)]
     public int TotalRows
